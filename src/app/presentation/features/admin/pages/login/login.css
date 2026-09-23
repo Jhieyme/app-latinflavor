@@ -1,0 +1,4 @@
+﻿/* Edge agrega su propio botón de revelado; este campo ya tiene uno accesible. */
+#admin-password::-ms-reveal {
+  display: none;
+}

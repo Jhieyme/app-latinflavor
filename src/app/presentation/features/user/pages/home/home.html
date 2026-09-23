@@ -1,0 +1,33 @@
+﻿<div class="flex min-h-dvh flex-col bg-cream">
+  <header class="border-b border-border bg-white">
+    <div class="mx-auto grid min-h-24 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:min-h-28 sm:px-10">
+      <span class="justify-self-start text-xs text-primary sm:text-sm">(ES)</span>
+
+      <a routerLink="/user" aria-label="Latin Flavor, inicio" class="justify-self-center">
+        <img src="assets/images/latin-flavor.svg" alt="Latin Flavor" width="190" height="64" class="h-auto w-36 sm:w-48" />
+      </a>
+
+
+      <a routerLink="/user/login" aria-label="Iniciar sesión" title="Iniciar sesión" class="flex h-10 w-10 items-center justify-center justify-self-end rounded-full border border-border text-primary transition-colors hover:bg-cream sm:h-11 sm:w-11">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="h-5 w-5">
+          <circle cx="12" cy="8" r="3.5" />
+          <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="relative isolate flex flex-1 items-center justify-center overflow-hidden px-5 py-12 sm:py-20">
+    <img src="assets/images/restaurant-peru.png" alt="" aria-hidden="true" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bg-black/25"></div>
+    <section aria-labelledby="welcome-title" class="w-full max-w-lg rounded-xl border border-white/50 bg-white/75 px-7 py-12 text-center shadow-[0_16px_48px_-16px_#00000040] backdrop-blur-sm sm:px-12 sm:py-14">
+      <h1 id="welcome-title" class="font-display text-4xl text-primary sm:text-5xl">Bienvenido(a)</h1>
+      <p class="mx-auto mt-5 max-w-sm text-sm leading-7 text-muted">
+        Nos alegra recibirte en Latin Flavor. Reserva tu mesa y disfruta de un momento especial con nosotros.
+      </p>
+      <a routerLink="/user/reserva" class="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-dark)]">
+        Hacer una reserva
+      </a>
+    </section>
+  </main>
+</div>

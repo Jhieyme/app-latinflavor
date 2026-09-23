@@ -1,1 +1,166 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+:root {
+
+  /* ========================================
+     LATIN FLAVOR - DESIGN SYSTEM
+  ======================================== */
+
+
+  /* ========================================
+     1. COLORES PRINCIPALES
+  ======================================== */
+
+  --color-primary: #514638;
+
+  --color-primary-light: #A49A8A;
+
+  --color-primary-dark: #332C24;
+
+
+  /* ========================================
+     2. COLORES SECUNDARIOS
+  ======================================== */
+
+  --color-secondary: #E8E0D5;
+
+  --color-secondary-light: #F5F1EB;
+
+  --color-accent: #596348;
+
+
+  /* ========================================
+     3. FONDOS
+  ======================================== */
+
+  --color-background: #FFFFFF;
+
+  --color-background-secondary: #F5F1EB;
+
+  --color-background-tertiary: #E8E0D5;
+
+  --color-surface: #FFFFFF;
+
+
+  /* ========================================
+     4. TEXTOS
+  ======================================== */
+
+  --color-text-primary: #343434;
+
+  --color-text-secondary: #777777;
+
+  --color-text-muted: #A49A8A;
+
+  --color-text-light: #FFFFFF;
+
+  --color-heading: #514638;
+
+
+  /* ========================================
+     5. BORDES
+  ======================================== */
+
+  --color-border: #E8E0D5;
+
+  --color-border-light: #F5F1EB;
+
+  --color-border-focus: #514638;
+
+
+  /* ========================================
+     6. BOTONES
+  ======================================== */
+
+  --color-button-primary: #514638;
+
+  --color-button-primary-hover: #332C24;
+
+  --color-button-secondary: #E8E0D5;
+
+  --color-button-secondary-hover: #D9CDBD;
+
+  --color-button-disabled: #E5E5E5;
+
+
+  /* ========================================
+     7. ESTADOS GENERALES
+  ======================================== */
+
+  --color-success: #2E7D32;
+
+  --color-warning: #B7791F;
+
+  --color-error: #C62828;
+
+  --color-info: #546E7A;
+
+
+  /* ========================================
+     8. RESERVAS
+  ======================================== */
+
+  --color-reservation-available: #F5F1EB;
+
+  --color-reservation-selected: #514638;
+
+  --color-reservation-unavailable: #E5E5E5;
+
+  --color-reservation-confirmed: #2E7D32;
+
+  --color-reservation-pending: #B7791F;
+
+  --color-reservation-cancelled: #C62828;
+
+  --color-reservation-completed: #546E7A;
+
+
+  /* ========================================
+     9. CALENDARIO
+  ======================================== */
+
+  --color-calendar-background: #FFFFFF;
+
+  --color-calendar-header: #F5F1EB;
+
+  --color-calendar-today: #E8E0D5;
+
+  --color-calendar-selected: #514638;
+
+  --color-calendar-hover: #E8E0D5;
+
+  --color-calendar-disabled: #E5E5E5;
+
+
+  /* ========================================
+     10. FORMULARIOS
+  ======================================== */
+
+  --color-input-background: #FFFFFF;
+
+  --color-input-border: #E8E0D5;
+
+  --color-input-focus: #514638;
+
+  --color-input-disabled: #F5F1EB;
+
+  --color-input-error: #C62828;
+
+}
+
+@theme inline {
+  --color-primary: var(--color-heading);
+  --color-accent: #596348;
+  --color-cream: var(--color-secondary-light);
+  --color-sand: var(--color-secondary);
+  --color-muted: #716b63;
+  --color-border: #E8E0D5;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-sans: 'Segoe UI', Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--color-background-secondary); color: var(--color-text-primary); font-family: 'Segoe UI', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+::selection { background: var(--color-secondary); color: var(--color-primary-dark); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
