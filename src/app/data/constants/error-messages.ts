@@ -1,0 +1,22 @@
+export const IDENTITY_ERROR_MESSAGES: Readonly<Record<string, string>> =
+{
+  USER_EMAIL_ALREADY_EXISTS: 'El correo electrónico ya está registrado.',
+  USER_USERNAME_ALREADY_EXISTS: 'El nombre de usuario ya está registrado.',
+  USER_DNI_ALREADY_EXISTS: 'El DNI ya está registrado.',
+  ROLE_NOT_FOUND: 'El rol no existe o está inactivo.',
+  PERMISSION_NOT_FOUND: 'Uno de los permisos no existe o está inactivo.',
+  USER_NOT_FOUND: 'No se encontró el usuario solicitado.',
+  UNSUPPORTED_USER_SEARCH_FILTER: 'Uno de los filtros de búsqueda no es válido.',
+  USER_NOT_INTERNAL: 'El usuario seleccionado no pertenece al personal interno.',
+  INVALID_CREDENTIALS: 'Usuario o contraseña incorrectos.',
+  INVALID_OTP_CODE: 'El código no es válido. Verifícalo o solicita uno nuevo.',
+  EXPIRED_OTP_CODE: 'El código ha vencido. Solicita uno nuevo.',
+  USER_IS_NOT_ACTIVE: 'Tu cuenta está inactiva. Contacta con administración.',
+  INVALID_REQUEST: 'Los datos enviados no son válidos. Revisa el formulario.',
+  UNAUTHORIZED: 'Inicia sesión para continuar.',
+  INVALID_TOKEN: 'Tu sesión ha vencido o no es válida. Inicia sesión nuevamente.',
+  AccessDeniedException: 'No tienes permiso para realizar esta operación.',
+  MethodArgumentTypeMismatchException: 'El identificador enviado no es válido.',
+  MethodArgumentNotValidException: 'Revisa los campos obligatorios y sus formatos.',
+  IllegalStateException: 'No pudimos completar la solicitud. Inténtalo más tarde.',
+};

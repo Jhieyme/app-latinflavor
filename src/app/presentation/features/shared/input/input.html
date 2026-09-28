@@ -1,0 +1,6 @@
+<input class="app-input" [id]="inputId" [type]="type" [value]="value" [placeholder]="placeholder"
+  [autocomplete]="autocomplete" [attr.inputmode]="inputmode" [attr.autocapitalize]="autocapitalize"
+  [spellcheck]="spellcheck" [attr.maxlength]="maxlength" [attr.pattern]="pattern" [required]="required"
+  [disabled]="disabled" [attr.aria-describedby]="describedBy"
+  [attr.aria-invalid]="invalid || (control && control.invalid && control.touched) ? true : null"
+  (input)="updateValue($event)" (blur)="onTouched()" />

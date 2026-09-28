@@ -1,0 +1,97 @@
+app-input {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-input,
+.app-input-group {
+  min-height: 3rem;
+  width: 100%;
+  border: 1px solid var(--color-input-border);
+  border-radius: 0.75rem;
+  background: var(--color-input-background);
+  color: var(--color-primary);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.app-input {
+  min-width: 0;
+  padding: 0.625rem 1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.app-input::placeholder {
+  color: color-mix(in srgb, var(--color-text-secondary) 70%, transparent);
+  opacity: 1;
+}
+
+.app-input:focus,
+.app-input-group:focus-within,
+.app-input.code-cell-active {
+  border-color: var(--color-primary-light);
+  outline: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary-light) 18%, transparent);
+}
+
+.app-input[aria-invalid='true'],
+.app-input.ng-invalid.ng-touched,
+.app-input-group:has(.app-input[aria-invalid='true'], .app-input.ng-invalid.ng-touched) {
+  border-color: var(--color-input-error);
+}
+
+.app-input:disabled,
+.app-input-group:has(.app-input:disabled) {
+  background: var(--color-input-disabled);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.app-input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.app-input-group > app-input {
+  flex: 1;
+  width: 0;
+}
+
+.app-input-group > app-input > .app-input {
+  min-height: calc(3rem - 2px);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.app-input-group > :first-child {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+.app-input-group > :last-child {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.app-input--otp {
+  height: 3.5rem;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
+.app-input--filled {
+  background: var(--color-background-secondary);
+}
+
+.code-input[aria-invalid='true'] + span .app-input--otp {
+  border-color: var(--color-input-error);
+}
+
+.code-input:disabled + span .app-input--otp {
+  background: var(--color-input-disabled);
+  color: var(--color-text-secondary);
+}

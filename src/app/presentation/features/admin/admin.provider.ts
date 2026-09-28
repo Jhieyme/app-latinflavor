@@ -1,15 +1,13 @@
-// import { Provider } from "@angular/core";
-// import { SeguridadRepositoryImpl } from "../../../data/services/seguridad/seguridad.repository.impl";
-// import { SeguridadRepository } from "../../../domain/repository/seguridad/seguridad.repositoy";
-// import { IniciarSesionFacadeService } from "./services/facades/iniciar-sesion-facade.service";
-// import { INICIAR_SESION_USECASES } from "../../../domain/usecases/seguridad/provider";
+import { Provider } from '@angular/core';
+import { AuthRepository } from '../../../domain/repository/auth/auth.repository';
+import { AuthRepositoryImpl } from '../../../data/services/auth/auth.repository.impl';
+import { LOGIN_USECASES } from '../../../domain/usecases/auth/provider';
+import { LoginFacade } from './login/services/facades/login-facade';
 
-// export const provideIniciarSesionFeature = (): Provider[] =>
-// ([
-//   IniciarSesionFacadeService,
-//   ...INICIAR_SESION_USECASES,
-//   {
-//     provide: SeguridadRepository,
-//     useClass: SeguridadRepositoryImpl
-//   }
-// ]);
+export function provideAdminFeature(): Provider[] {
+  return [
+    LoginFacade,
+    ...LOGIN_USECASES,
+    { provide: AuthRepository, useClass: AuthRepositoryImpl },
+  ];
+}

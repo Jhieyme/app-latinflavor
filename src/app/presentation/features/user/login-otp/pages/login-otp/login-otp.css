@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.login-card {
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--color-primary-dark) 10%, transparent);
+}
+
+.loading-indicator {
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.welcome-overlay {
+  background: linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-primary-dark) 42%, transparent),
+      color-mix(in srgb, var(--color-primary-dark) 22%, transparent));
+}
+
+.welcome-card {
+  background: color-mix(in srgb, var(--color-background-secondary) 96%, transparent);
+  border-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  box-shadow: 0 15px 60px
+  color-mix(in srgb, var(--color-primary-dark) 20%, transparent);
+}

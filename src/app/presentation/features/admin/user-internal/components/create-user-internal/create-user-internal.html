@@ -1,0 +1,67 @@
+<dialog #dialog aria-labelledby="create-user-title" (cancel)="cancel($event)">
+  <header>
+    <h2 id="create-user-title">Crear usuario</h2>
+    <p>Registra un miembro del personal interno. Todos los campos son obligatorios.</p>
+  </header>
+  <form #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="saving()">
+    <div class="fields">
+      <div><label for="create-username">Usuario</label><app-input inputId="create-username" name="username"
+          [(ngModel)]="username" required [disabled]="saving()" autocomplete="off" pattern=".*\S.*" /></div>
+      <div><label for="create-password">Contrase&#241;a</label><app-input inputId="create-password" name="password"
+          [(ngModel)]="password" required [disabled]="saving()" type="password" autocomplete="new-password" /></div>
+      <div>
+        <label for="create-firstName">Nombres</label>
+        <app-input inputId="create-firstName" name="firstName" [(ngModel)]="firstName" required [disabled]="saving()"
+          autocomplete="given-name" pattern=".*\S.*" />
+      </div>
+      <div><label for="create-paternalLastName">Apellido paterno</label><app-input inputId="create-paternalLastName"
+          name="paternalLastName" [(ngModel)]="paternalLastName" required [disabled]="saving()" pattern=".*\S.*" />
+      </div>
+      <div><label for="create-maternalLastName">Apellido materno</label><app-input inputId="create-maternalLastName"
+          name="maternalLastName" [(ngModel)]="maternalLastName" required [disabled]="saving()" pattern=".*\S.*" />
+      </div>
+      <div><label for="create-email">Correo electr&#243;nico</label><app-input inputId="create-email" name="email"
+          [(ngModel)]="email" required [disabled]="saving()" type="email" email autocomplete="email" /></div>
+      <div><label for="create-phoneNumber">Celular</label><app-input inputId="create-phoneNumber" name="phoneNumber"
+          [(ngModel)]="phoneNumber" required [disabled]="saving()" type="tel" inputmode="numeric" pattern="9[0-9]{8}"
+          maxlength="9" /></div>
+      <div>
+        <label for="create-dni">DNI</label>
+        <app-input inputId="create-dni" name="dni" [(ngModel)]="dni" required [disabled]="saving()" inputmode="numeric"
+          pattern="[0-9]{8}" maxlength="8" />
+      </div>
+      <div class="wide">
+        <label for="create-role">Rol</label>
+        <select id="create-role" name="role" class="app-input select-control" [(ngModel)]="role" required
+          [disabled]="saving()">
+          <option value="INTERNAL">INTERNAL</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div class="wide">
+        <label id="permissions-label">Permisos</label>
+        <details class="permissions-dropdown">
+          <summary class="app-input select-control" aria-labelledby="permissions-label permissions-value"
+            [attr.aria-disabled]="saving()" (click)="onPermissionsClick($event)">
+            <span id="permissions-value">{{ selectedPermissions.length === 1 ? selectedPermissions[0] :
+              selectedPermissions.length ? selectedPermissions.length + ' permisos seleccionados' : 'Selecciona
+              permisos' }}</span>
+          </summary>
+          <div class="permissions-options" role="group" aria-labelledby="permissions-label">
+            @for (permission of permissionOptions; track permission) {
+            <label class="permission-option">
+              <input type="checkbox" [checked]="selectedPermissions.includes(permission)"
+                (change)="togglePermission(permission)" [disabled]="saving()" />
+              <span>{{ permission }}</span>
+            </label>
+            }
+          </div>
+        </details>
+      </div>
+    </div>
+    <p class="error" role="alert">{{ error() }}</p>
+    <footer><button type="button" (click)="cancel()" [disabled]="saving()">Cancelar</button><button type="submit"
+        class="primary" [disabled]="saving() || !allowed()">{{ saving() ? 'Guardando...' : 'Crear usuario' }}</button>
+    </footer>
+  </form>
+</dialog>

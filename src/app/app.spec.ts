@@ -1,9 +1,17 @@
-﻿import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { App } from './app';
+import { provideRouter } from '@angular/router';
+import { AdminSessionRepository } from './domain/repository/auth/admin-session.repository';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideRouter([]), {
+        provide: AdminSessionRepository,
+        useValue: { read: () => null, save: () => {}, clear: () => {} },
+      }],
+    }).compileComponents();
   });
 
   it('should create the app', () => {

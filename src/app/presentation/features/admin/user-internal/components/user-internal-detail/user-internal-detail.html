@@ -1,0 +1,71 @@
+<dialog
+  #dialog
+  aria-labelledby="user-detail-title"
+  (cancel)="close($event)"
+  (click)="backdropClick($event)"
+>
+  <header>
+    <div>
+      <h2 id="user-detail-title">Detalle del usuario</h2>
+    </div>
+    <button
+      type="button"
+      class="close-button"
+      aria-label="Cerrar detalle"
+      (click)="close()"
+      autofocus
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        aria-hidden="true"
+      >
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+  </header>
+  <div class="content" [attr.aria-busy]="loading()">
+    @if (loading()) {
+      <p role="status" class="message">Cargando detalle del usuario...</p>
+    } @else if (error()) {
+      <p role="alert" class="error">{{ error() }}</p>
+      <button type="button" class="retry" (click)="load()">Reintentar</button>
+    } @else if (user(); as detail) {
+      <section class="identity" aria-label="Usuario">
+        <span class="avatar" aria-hidden="true">{{ (detail.firstName || detail.username).slice(0, 1).toUpperCase() }}</span>
+        <p class="person-name">{{ detail.firstName }} {{ detail.paternalLastName }} {{ detail.maternalLastName }}</p>
+        <span class="status" [class.active]="detail.active">{{
+          detail.active ? 'Activo' : 'Inactivo'
+        }}</span>
+      </section>
+      <section aria-labelledby="detail-roles-title">
+        <h3 id="detail-roles-title">
+          Roles <span class="count">{{ detail.roles.length }}</span>
+        </h3>
+        <ul class="badges">
+          @for (role of detail.roles; track $index) {
+            <li>{{ role }}</li>
+          } @empty {
+            <li class="empty">Sin roles asignados</li>
+          }
+        </ul>
+      </section>
+      <section aria-labelledby="detail-permissions-title">
+        <h3 id="detail-permissions-title">
+          Permisos <span class="count">{{ detail.permissions.length }}</span>
+        </h3>
+        <ul class="permissions">
+          @for (permission of detail.permissions; track $index) {
+            <li>{{ permission }}</li>
+          } @empty {
+            <li class="empty">Sin permisos asignados</li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+</dialog>

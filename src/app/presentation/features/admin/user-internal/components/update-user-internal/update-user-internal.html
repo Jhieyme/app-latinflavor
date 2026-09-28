@@ -1,0 +1,75 @@
+<dialog #dialog aria-labelledby="edit-title" (cancel)="cancel($event)">
+  <header>
+    <h2 id="edit-title">Modificar usuario</h2>
+  </header>
+  <div class="content" [attr.aria-busy]="saving() !== null">
+    <form #infoForm="ngForm" (ngSubmit)="saveInfo(infoForm)" aria-labelledby="info-title">
+      <h3 id="info-title">Informaci&#243;n b&#225;sica</h3>
+      @if (!canUpdate()) {<p class="help">Tu rol y permisos no permiten editar estos campos.</p>}
+      <div class="fields">
+        <div><label for="edit-firstName">Nombres</label><app-input inputId="edit-firstName" name="firstName"
+            [(ngModel)]="firstName" required pattern=".*\S.*" [disabled]="!canUpdate() || saving() !== null" /></div>
+        <div><label for="edit-paternalLastName">Apellido paterno</label><app-input inputId="edit-paternalLastName"
+            name="paternalLastName" [(ngModel)]="paternalLastName" required pattern=".*\S.*"
+            [disabled]="!canUpdate() || saving() !== null" /></div>
+        <div><label for="edit-maternalLastName">Apellido materno</label><app-input inputId="edit-maternalLastName"
+            name="maternalLastName" [(ngModel)]="maternalLastName" required pattern=".*\S.*"
+            [disabled]="!canUpdate() || saving() !== null" /></div>
+        <div><label for="edit-phoneNumber">Celular</label><app-input inputId="edit-phoneNumber" name="phoneNumber"
+            [(ngModel)]="phoneNumber" required inputmode="numeric" pattern="9[0-9]{8}" maxlength="9"
+            [disabled]="!canUpdate() || saving() !== null" /></div>
+        <div><label for="edit-dni">DNI</label><app-input inputId="edit-dni" name="dni" [(ngModel)]="dni" required
+            inputmode="numeric" pattern="[0-9]{8}" maxlength="8" [disabled]="!canUpdate() || saving() !== null" /></div>
+        <div><label for="edit-active">Estado</label>
+          <select id="edit-active" class="app-input" name="active" [(ngModel)]="active"
+            [disabled]="!canUpdate() || saving() !== null">
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      @if (canUpdate()) {<button class="primary" type="submit" [disabled]="saving() !== null">{{ saving() === 'info' ?
+        'Guardando...' : 'Guardar datos' }}</button>}
+    </form>
+    <form #accessForm="ngForm" (ngSubmit)="saveAccess(accessForm)" aria-labelledby="access-title">
+      <h3 id="access-title">Rol y permisos</h3>
+      @if (!canAccess()) {<p class="help">Tu rol y permisos no permiten modificar el acceso.</p>}
+      <div class="fields">
+        <div class="wide"><label for="edit-role">Rol</label>
+          <select id="edit-role" class="app-input select-control" name="role" [(ngModel)]="role" required
+            [disabled]="!canAccess() || saving() !== null">
+            <option value="" disabled>Selecciona un rol</option>
+            <option value="INTERNAL">INTERNAL</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+          @if (!role) {<p class="help">Roles actuales: {{ user().roles.join(', ') || 'Sin roles' }}. Selecciona el rol
+            que reemplazar&#225; el acceso actual.</p>}
+        </div>
+        <div class="wide"><label id="edit-permissions-label">Permisos</label>
+          <details class="permissions-dropdown">
+            <summary class="app-input select-control" aria-labelledby="edit-permissions-label edit-permissions-value"
+              [attr.aria-disabled]="!canAccess() || saving() !== null" (click)="permissionsClick($event)">
+              <span id="edit-permissions-value">{{ selectedPermissions.length === 1 ? selectedPermissions[0] :
+                selectedPermissions.length ? selectedPermissions.length + ' permisos seleccionados' : 'Selecciona
+                permisos' }}</span>
+            </summary>
+            <div class="permissions-options" role="group" aria-labelledby="edit-permissions-label">
+              @for (permission of permissionOptions(); track permission) {
+              <label class="permission-option"><input type="checkbox" [checked]="selectedPermissions.includes(permission)"
+                  (change)="togglePermission(permission)" [disabled]="!canAccess() || saving() !== null" />
+                <span>{{ permission }}</span>
+              </label>
+              }
+            </div>
+          </details>
+          @if (!canAccess()) {<p class="help">{{ selectedPermissions.join(', ') || 'Sin permisos' }}</p>}
+        </div>
+      </div>
+      @if (canAccess()) {<button type="submit" class="primary" [disabled]="saving() !== null">{{ saving() === 'access' ?
+        'Guardando...' : 'Guardar acceso' }}</button>}
+    </form>
+    <p role="alert" class="error">{{ error() }}</p>
+    <p role="status" class="success">{{ success() }}</p>
+    <footer><button type="button" (click)="cancel()" [disabled]="saving() !== null">Cerrar</button></footer>
+  </div>
+</dialog>

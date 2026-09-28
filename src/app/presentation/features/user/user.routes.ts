@@ -1,20 +1,16 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const USER_ROUTES: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
   {
-    path: 'login',
-    title: 'Inicia sesión | Latin Flavor',
-    loadComponent: () => import('./pages/login/login').then(m => m.Login),
+    path: 'home',
+    loadChildren: () =>
+      import('./home/home-welcome.routes').then(m => m.HOME_WELCOME_ROUTES),
   },
   {
-    path: '',
-    pathMatch: 'full',
-    title: 'Bienvenido | Latin Flavor',
-    loadComponent: () => import('./pages/home/home').then(m => m.Home),
+    path: 'login-otp',
+    loadChildren: () =>
+      import('./login-otp/login-otp.routes').then(m => m.LOGIN_OTP_ROUTES),
   },
-  {
-    path: 'reserva',
-    title: 'Reserva tu mesa | Latin Flavor',
-    loadComponent: () => import('./pages/reservation/reservation').then(m => m.Reservation),
-  },
+  { path: '**', redirectTo: 'home' },
 ];

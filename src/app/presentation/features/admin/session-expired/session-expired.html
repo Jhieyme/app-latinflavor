@@ -1,0 +1,8 @@
+<dialog #dialog aria-labelledby="session-expired-title" aria-describedby="session-expired-message"
+  (cancel)="$event.preventDefault()">
+  <div class="notice">
+    <h2 id="session-expired-title">Tu sesión expiró</h2>
+    <p id="session-expired-message">El tiempo de tu sesión ha terminado. Inicia sesión nuevamente para continuar.</p>
+    <button type="button" (click)="accept()" autofocus>Aceptar</button>
+  </div>
+</dialog>

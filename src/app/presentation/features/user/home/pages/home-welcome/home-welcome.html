@@ -1,0 +1,50 @@
+<main class="relative isolate grid min-h-dvh place-items-center bg-primary px-3 py-4 sm:px-5 sm:py-6">
+  <img class="absolute inset-0 -z-20 h-full w-full object-cover object-center" src="/images/restaurant-peru-terrace.png"
+    alt="" fetchpriority="high" />
+  <div class="welcome-overlay absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  <section
+    class="welcome-card w-full max-w-2xl rounded-3xl border border-white/60 bg-white/90 text-primary backdrop-blur-[5px]"
+    aria-labelledby="welcome-title">
+    <header
+      class="grid min-h-20 grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2 border-b border-border/80 px-4 py-3 sm:gap-3 sm:px-6">
+      <span class="flex items-center gap-1 text-[11px] font-medium tracking-wider text-accent" lang="es">
+        <svg class="size-6 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.5">
+          <circle cx="12" cy="12" r="9" />
+          <ellipse cx="12" cy="12" rx="4" ry="9" />
+          <path d="M3 12h18" />
+        </svg>
+        ES
+      </span>
+      <img class="h-auto w-full max-w-[145px] justify-self-center sm:max-w-40" src="/icons/latin-flavor.svg"
+        alt="Latin Flavor" width="190" height="64" />
+      <a [routerLink]="loginRoute"
+        class="grid size-11 place-items-center rounded-full transition-colors duration-200 hover:text-accent focus-visible:outline-accent"
+        aria-label="Iniciar sesión" title="Iniciar sesión">
+        <svg class="size-6" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round">
+          <circle cx="12" cy="8" r="3.5" />
+          <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+        </svg>
+      </a>
+    </header>
+
+    <div class="px-5 pb-14 pt-12 text-center sm:px-8 sm:pb-20 sm:pt-16">
+      <h1 id="welcome-title" class="font-display text-3xl font-normal leading-tight tracking-tight sm:text-4xl">
+        {{ userName() ? 'Bienvenido(a), ' + userName() + '...' : 'Bienvenido(a)' }}</h1>
+      <button type="button" (click)="showReservationNotice()" aria-describedby="reservation-notice"
+        class="mt-8 flex min-h-13 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-[var(--color-primary-dark)] active:bg-[var(--color-primary-dark)] sm:mt-10 sm:text-base">
+        <svg class="size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.5" stroke-linecap="round">
+          <rect x="4" y="5" width="16" height="16" rx="2" />
+          <path d="M8 3v4m8-4v4M4 10h16" />
+        </svg>
+        Hacer una reserva
+      </button>
+      <p id="reservation-notice" class="mt-3 min-h-6 text-sm leading-6 text-accent" role="status">
+        {{ reservationNotice() ? 'Próximamente' : '' }}
+      </p>
+    </div>
+  </section>
+</main>

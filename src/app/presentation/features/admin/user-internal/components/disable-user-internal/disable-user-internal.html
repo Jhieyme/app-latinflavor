@@ -1,0 +1,9 @@
+<dialog #dialog aria-labelledby="disable-title" aria-describedby="disable-description" (cancel)="cancel($event)">
+  <h2 id="disable-title">Deshabilitar usuario</h2>
+  <p id="disable-description">&#191;Deseas deshabilitar a <strong>{{ user().username || user().email || user().id }}</strong>? Su estado pasar&#225; a inactivo.</p>
+  <p class="error" role="alert">{{ error() }}</p>
+  <footer [attr.aria-busy]="saving()">
+    <button type="button" (click)="cancel()" [disabled]="saving()" autofocus>Cancelar</button>
+    <button type="button" class="danger" (click)="confirm()" [disabled]="saving() || !allowed()">{{ saving() ? 'Deshabilitando...' : 'Deshabilitar' }}</button>
+  </footer>
+</dialog>

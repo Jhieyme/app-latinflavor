@@ -1,0 +1,9 @@
+dialog { margin: auto; width: min(460px, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); padding: 1.5rem; border: 1px solid var(--color-border); border-radius: 1.25rem; background: white; color: var(--color-text-primary); box-shadow: 0 24px 80px #30262230; }
+dialog::backdrop { background: #211c196b; backdrop-filter: blur(3px); }
+h2 { font-size: 1.3rem; font-weight: 600; }
+p { margin-top: 1rem; font-size: .9rem; line-height: 1.6; overflow-wrap: anywhere; }
+.error { color: var(--color-error); }
+footer { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+button { min-height: 44px; padding: .6rem 1rem; border: 1px solid var(--color-border); border-radius: .75rem; cursor: pointer; }
+.danger { background: #993e44; color: white; border-color: #993e44; }
+button:disabled { opacity: .5; cursor: not-allowed; }
