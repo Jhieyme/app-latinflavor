@@ -290,15 +290,73 @@
   }
 }
 
-.list-button { min-height: 44px; padding: .5rem .75rem; border: 0; border-radius: .75rem; cursor: pointer; color: var(--color-primary); background: transparent; }
-.list-button:hover { background: var(--color-secondary-light); }
-.list-button:disabled { opacity: .4; cursor: not-allowed; }
-.pagination { flex-wrap: wrap; align-items: center; }
-.pagination-controls { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
-.pagination-controls select { width: auto; min-height: 36px; padding: .35rem .5rem; font-size: inherit; }
-.search-options { margin: -1rem 1.6rem 1rem; font-size: .75rem; color: var(--color-text-secondary); }
-.search-options summary { cursor: pointer; padding-block: .5rem; }
-.search-options-fields { display: flex; flex-wrap: wrap; gap: .75rem; padding-top: .5rem; }
-.search-options-fields label { flex: 1 1 150px; }
-.search-options-fields select { margin-top: .4rem; font-size: .8rem; }
-@media(max-width:700px) { .search-options { margin-inline: 1rem; } }
+.list-button {
+  min-height: 44px;
+  padding: .5rem .75rem;
+  border: 0;
+  border-radius: .75rem;
+  cursor: pointer;
+  color: var(--color-primary);
+  background: transparent;
+}
+
+.list-button:hover {
+  background: var(--color-secondary-light);
+}
+
+.list-button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.pagination {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.pagination-controls select {
+  width: auto;
+  min-height: 36px;
+  padding: .35rem .5rem;
+  font-size: inherit;
+}
+
+.search-options {
+  margin: -1rem 1.6rem 1rem;
+  font-size: .75rem;
+  color: var(--color-text-secondary);
+}
+
+.search-options summary {
+  cursor: pointer;
+  padding-block: .5rem;
+}
+
+.search-options-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  padding-top: .5rem;
+}
+
+.search-options-fields label {
+  flex: 1 1 150px;
+}
+
+.search-options-fields select {
+  margin-top: .4rem;
+  font-size: .8rem;
+}
+
+@media(max-width:700px) {
+  .search-options {
+    margin-inline: 1rem;
+  }
+}
