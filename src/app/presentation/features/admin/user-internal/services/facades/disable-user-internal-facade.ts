@@ -3,7 +3,9 @@ import { DisableUserInternalUseCase } from '../../../../../../domain/usecases/us
 
 @Injectable()
 export class DisableUserInternalFacade {
+
   constructor(private readonly useCase: DisableUserInternalUseCase) {}
+
   execute(id: string) {
     return this.useCase.execute(id);
   }

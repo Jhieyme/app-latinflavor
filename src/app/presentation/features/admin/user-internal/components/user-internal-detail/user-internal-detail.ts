@@ -1,3 +1,4 @@
+import { ToastService } from '../../../../../services/toast/toast.service';
 import {
   AfterViewInit,
   Component,
@@ -10,7 +11,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { UserInternal } from '../../../../../../domain/models/user-internal/user-internal';
@@ -23,6 +23,7 @@ import { AdminSessionStore } from '../../../login/services/store/admin-session.s
   styleUrl: './user-internal-detail.css',
 })
 export class UserInternalDetail implements AfterViewInit {
+  private readonly toast = inject(ToastService);
   @ViewChild('dialog', { static: true }) private dialog!: ElementRef<HTMLDialogElement>;
   readonly userId = input.required<string>();
   readonly dismissed = output<void>();
@@ -80,7 +81,7 @@ export class UserInternalDetail implements AfterViewInit {
       .subscribe({
         next: (user) => this.user.set(user),
         error: (error: unknown) => {
-          this.error.set(errorMessage(error));
+          this.error.set('No se pudo cargar el detalle.'); this.toast.showError(error);
         },
       });
   }

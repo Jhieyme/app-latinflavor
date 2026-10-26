@@ -1,5 +1,5 @@
+import { ToastService } from '../../../../../services/toast/toast.service';
 import { AppInput } from '../../../../shared/input/input';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -15,6 +15,7 @@ import { UserSessionStore } from '../../services/store/user-session.store';
   styleUrl: './login-otp.css',
 })
 export class LoginOtp {
+  private readonly toast = inject(ToastService);
   private readonly loginOtpFacade = inject(LoginOtpFacade);
   private readonly userSessionStore = inject(UserSessionStore);
   private readonly router = inject(Router);
@@ -43,7 +44,7 @@ export class LoginOtp {
           this.userSessionStore.start(email);
           void this.router.navigate(['validate-code'], { relativeTo: this.route });
         },
-        error: error => this.errorMessage.set(errorMessage(error)),
+        error: error => this.toast.showError(error),
       });
   }
 

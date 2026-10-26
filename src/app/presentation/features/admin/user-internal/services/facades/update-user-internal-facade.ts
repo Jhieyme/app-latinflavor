@@ -6,13 +6,16 @@ import { UpdateUserAccessUseCase } from '../../../../../../domain/usecases/user-
 
 @Injectable()
 export class UpdateUserInternalFacade {
+
   constructor(
     private readonly info: UpdateUserInternalUseCase,
     private readonly access: UpdateUserAccessUseCase,
   ) {}
+
   updateInfo(id: string, value: UpdateUserInternal) {
     return this.info.execute(id, value);
   }
+
   updateAccess(id: string, value: UpdateUserAccess) {
     return this.access.execute(id, value);
   }

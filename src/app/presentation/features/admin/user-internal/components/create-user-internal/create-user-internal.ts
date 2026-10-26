@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, ViewChild, computed, effect, inject, output, signal } from '@angular/core';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
@@ -96,7 +95,7 @@ export class CreateUserInternalDialog implements AfterViewInit {
         this.toast.show('Usuario creado correctamente.');
         this.created.emit();
       },
-      error: (error: unknown) => { this.error.set(errorMessage(error)); },
+      error: (error: unknown) => { this.toast.showError(error); },
     });
   }
 }

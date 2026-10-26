@@ -1,4 +1,3 @@
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -67,7 +66,7 @@ export class ValidateCode {
           this.userSessionStore.authenticate(session);
           this.code = '';
         },
-        error: error => this.errorMessage.set(errorMessage(error)),
+        error: error => this.toast.showError(error),
       });
   }
 
@@ -99,7 +98,7 @@ export class ValidateCode {
               this.resendSeconds.set(seconds);
             });
         },
-        error: (error: unknown) => { this.errorMessage.set(errorMessage(error)); },
+        error: (error: unknown) => { this.toast.showError(error); },
       });
   }
 

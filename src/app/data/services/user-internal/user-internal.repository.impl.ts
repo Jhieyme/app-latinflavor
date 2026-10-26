@@ -1,4 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { SearchUserInternal, UserInternalPageResult } from '../../../domain/models/user-internal/search-user-internal';
+import { UserInternalPageResponse } from '../../dtos/user-internal-page-response';
+import { mapUserInternalPage } from '../../mappers/user-internal-page.mapper';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { UserInternalRepository } from '../../../domain/repository/user-internal/user-internal.repository';
@@ -14,6 +17,7 @@ import { CreateUserInternalRequest } from '../../dtos/create-user-internal-reque
 
 @Injectable()
 export class UserInternalRepositoryImpl extends UserInternalRepository {
+
   constructor(private readonly http: HttpClient) { super(); }
 
   override updateInfo(id: string, value: UpdateUserInternal): Observable<void> {
@@ -48,13 +52,14 @@ export class UserInternalRepositoryImpl extends UserInternalRepository {
     );
   }
 
-  override getAll(): Observable<readonly UserInternal[]> {
-    return this.http.get<UserInternalResponse[]>(ApiManifest.IDENTITY.USER).pipe(
-      map(users => users.map(user =>
-        ({ ...user,
-          roles: [...(user.roles ?? [])],
-          permissions: [...user.permissions]
-        }))),
-    );
+  override search(criteria: SearchUserInternal): Observable<UserInternalPageResult> {
+    let params = new HttpParams()
+      .set('page', criteria.page)
+      .set('size', criteria.size)
+      .set('sort', `${criteria.sort},${criteria.direction}`);
+    if (criteria.q.trim()) params = params.set('q', criteria.q.trim());
+    for (const field of criteria.filters) params = params.append('filters', field);
+    return this.http.get<UserInternalPageResponse>(`${ApiManifest.IDENTITY.USER}/search`, { params })
+      .pipe(map(mapUserInternalPage));
   }
 }

@@ -23,7 +23,7 @@
       <form #emailForm="ngForm" class="mt-8" (ngSubmit)="submit()">
         <label for="email" class="mb-2 block text-sm font-medium text-primary">Correo electrónico</label>
         <app-input inputId="email" name="email" type="email" required email maxlength="254" autocomplete="email"
-          [(ngModel)]="email" [disabled]="loading()" placeholder="tu@correo.com"
+          [(ngModel)]="email" [disabled]="loading()" placeholder="tu@gmail.com"
           [invalid]="errorMessage() ? true : null" describedBy="login-error"
          ></app-input>
 

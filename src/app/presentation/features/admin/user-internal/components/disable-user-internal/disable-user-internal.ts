@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, ViewChild, computed, effect, inject, input, output, signal } from '@angular/core';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { UserInternal } from '../../../../../../domain/models/user-internal/user-internal';
@@ -53,7 +52,7 @@ export class DisableUserInternalDialog implements AfterViewInit {
         this.toast.show('Usuario deshabilitado correctamente.');
         this.disabled.emit(user.id);
       },
-      error: (error: unknown) => { this.error.set(errorMessage(error)); },
+      error: (error: unknown) => { this.toast.showError(error); },
     });
   }
 }

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, OnInit, ViewChild, computed, effect, inject, input, output, signal } from '@angular/core';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, finalize } from 'rxjs';
@@ -89,7 +88,7 @@ export class UpdateUserInternalDialog implements OnInit, AfterViewInit {
         const message = section === 'info' ? 'Datos personales actualizados.' : 'Rol y permisos actualizados.';
         this.success.set(message); this.toast.show(message); this.saved.emit();
       },
-      error: (error: unknown) => { this.error.set(errorMessage(error)); },
+      error: (error: unknown) => { this.toast.showError(error); },
     });
   }
 }

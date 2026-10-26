@@ -1,7 +1,9 @@
+import { errorMessage } from '../../../domain/models/errors/application-error';
 import { DestroyRef, Injectable, inject, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
+  readonly kind = signal<'success' | 'error'>('success');
   private readonly currentMessage = signal('');
   private timeout: ReturnType<typeof setTimeout> | undefined;
   readonly message = this.currentMessage.asReadonly();
@@ -10,12 +12,18 @@ export class ToastService {
     inject(DestroyRef).onDestroy(() => this.dismiss());
   }
 
-  show(message: string): void {
+  showError(error: unknown): void {
+    this.show(errorMessage(error), 'error');
+  }
+
+  show(message: string, kind: 'success' | 'error' = 'success'): void {
+    if (this.message() === message && this.kind() === kind) return;
     this.dismiss();
     if (!message.trim()) return;
 
+    this.kind.set(kind);
     this.currentMessage.set(message);
-    this.timeout = setTimeout(() => this.dismiss(), 5000);
+    this.timeout = setTimeout(() => this.dismiss(), kind === 'error' ? 8000 : 5000);
   }
 
   dismiss(): void {

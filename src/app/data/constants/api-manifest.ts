@@ -8,4 +8,8 @@ export class ApiManifest {
         USER: `${environment.API_BASE_URL}/identity-service/v1/users`,
     };
 
+    static readonly CUSTOMER = {
+        CUSTOMER: `${environment.API_BASE_URL}/customer-service/v1/customers`,
+    };
+
 }

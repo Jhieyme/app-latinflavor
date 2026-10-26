@@ -1,3 +1,4 @@
+import { SearchUserInternal, UserInternalPageResult } from '../../models/user-internal/search-user-internal';
 import { Observable } from 'rxjs';
 import { UpdateUserInternal } from '../../models/user-internal/update-user-internal';
 import { UpdateUserAccess } from '../../models/user-internal/update-user-access';
@@ -10,5 +11,5 @@ export abstract class UserInternalRepository {
   abstract disable(id: string): Observable<void>;
   abstract create(user: CreateUserInternal): Observable<void>;
   abstract getById(id: string): Observable<UserInternal>;
-  abstract getAll(): Observable<readonly UserInternal[]>;
+  abstract search(criteria: SearchUserInternal): Observable<UserInternalPageResult>;
 }

@@ -1,5 +1,5 @@
+import { ToastService } from '../../../../../services/toast/toast.service';
 import { AppInput } from '../../../../shared/input/input';
-import { errorMessage } from '../../../../../../domain/models/errors/application-error';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { AdminSessionStore } from '../../services/store/admin-session.store';
   styleUrl: './login.css',
 })
 export class AdminLogin {
+  private readonly toast = inject(ToastService);
   private readonly loginFacade = inject(LoginFacade);
   private readonly store = inject(AdminSessionStore);
   private readonly destroyRef = inject(DestroyRef);
@@ -51,7 +52,7 @@ export class AdminLogin {
           this.store.authenticate(session);
           void this.router.navigate(['/admin/user-internal']);
         },
-        error: (error: unknown) => this.errorMessage.set(errorMessage(error)),
+        error: (error: unknown) => this.toast.showError(error),
       });
   }
 

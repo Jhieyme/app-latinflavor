@@ -17,6 +17,7 @@ export function mapAuthSession(response: SignInResponse): AuthSession {
     if (decoded && typeof decoded === 'object' && !Array.isArray(decoded))
       claims = decoded as Record<string, unknown>;
   } catch {
+    claims = {};
   }
 
   const value = response.roles ?? response.role ?? claims['roles'] ?? claims['role'];

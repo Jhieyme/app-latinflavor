@@ -4,7 +4,9 @@ import { CreateUserInternalUseCase } from '../../../../../../domain/usecases/use
 
 @Injectable()
 export class CreateUserInternalFacade {
-  constructor(private readonly useCase: CreateUserInternalUseCase) {}
+
+  constructor(private readonly useCase: CreateUserInternalUseCase) { }
+
   execute(user: CreateUserInternal) {
     return this.useCase.execute(user);
   }

@@ -3,34 +3,26 @@
 
 :root {
 
-  /* ========================================
-     1. COLORES PRINCIPALES
-  ======================================== */
+  
 
   --color-primary: #594236;
   --color-primary-light: #827064;
   --color-primary-dark: #3D2C24;
 
-  /* ========================================
-     2. COLORES SECUNDARIOS
-  ======================================== */
+  
 
   --color-secondary: #E9DED2;
   --color-secondary-light: #FAF6F0;
   --color-accent: #95603B;
 
-  /* ========================================
-     3. FONDOS
-  ======================================== */
+  
 
   --color-background: #FFFFFF;
   --color-background-secondary: #FAF6F0;
   --color-background-tertiary: #E9DED2;
   --color-surface: #FFFFFF;
 
-  /* ========================================
-     4. TEXTOS
-  ======================================== */
+  
 
   --color-text-primary: #352B26;
   --color-text-secondary: #75665B;
@@ -38,17 +30,13 @@
   --color-text-light: #FFFFFF;
   --color-heading: #594236;
 
-  /* ========================================
-     5. BORDES
-  ======================================== */
+  
 
   --color-border: #E9DED2;
   --color-border-light: #FAF6F0;
   --color-border-focus: #594236;
 
-  /* ========================================
-     6. BOTONES
-  ======================================== */
+  
 
   --color-button-primary: #594236;
   --color-button-primary-hover: #3D2C24;
@@ -56,18 +44,14 @@
   --color-button-secondary-hover: #DCCBBB;
   --color-button-disabled: #E7DFD7;
 
-  /* ========================================
-     7. ESTADOS GENERALES
-  ======================================== */
+  
 
   --color-success: #24734F;
   --color-warning: #93600D;
   --color-error: #BE3542;
   --color-info: #286B87;
 
-  /* ========================================
-     8. FORMULARIOS
-  ======================================== */
+  
 
   --color-input-background: #FFFFFF;
   --color-input-border: #E9DED2;
