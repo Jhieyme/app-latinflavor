@@ -1,25 +1,7 @@
+import { readExceptionCode } from '../errors/read-exception-code';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApplicationError } from '../../domain/models/errors/application-error';
 import { resolveIdentityErrorMessage } from '../errors/identity-error.resolver';
-
-function readExceptionCode(payload: unknown): string | null {
-  if (typeof payload === 'string') {
-    try {
-      payload = JSON.parse(payload);
-    } catch {
-      return null;
-    }
-  }
-  if (
-    payload &&
-    typeof payload === 'object' &&
-    'exceptionName' in payload &&
-    typeof payload.exceptionName === 'string'
-  ) {
-    return payload.exceptionName;
-  }
-  return null;
-}
 
 export function mapIdentityError(
   error: HttpErrorResponse,

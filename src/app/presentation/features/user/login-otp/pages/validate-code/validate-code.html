@@ -1,6 +1,7 @@
 <main class="grid min-h-dvh place-items-center bg-cream px-4 py-8">
   <section class="validate-card w-full max-w-md overflow-hidden rounded-3xl border border-border bg-white text-primary"
-    aria-labelledby="validate-title" [attr.aria-busy]="loading() || resending()">
+    [class.profile-card]="session() && profile()?.profileCompleted === false && !profileLoading() && !profileFailed()"
+    aria-labelledby="validate-title" [attr.aria-busy]="loading() || resending() || profileLoading()">
     <header class="grid min-h-20 grid-cols-[44px_minmax(0,1fr)_44px] items-center border-b border-border/80 px-5 py-3">
       <a routerLink="/user/login-otp"
         class="grid size-11 place-items-center rounded-full transition-colors hover:text-accent"
@@ -11,7 +12,7 @@
         </svg>
       </a>
       <strong class="justify-self-center text-base font-semibold text-primary">
-        {{ session() ? 'Completa tu perfil' : 'Confirma tu acceso' }}
+        {{ profile()?.profileCompleted === false ? 'Completa tu perfil' : 'Confirma tu acceso' }}
       </strong>
       <span aria-hidden="true"></span>
     </header>
@@ -34,8 +35,7 @@
 
           <span class="grid grid-cols-6 gap-2" aria-hidden="true">
             @for (position of codePositions; track position) {
-            <span
-              class="app-input app-input--otp relative grid place-items-center text-xl font-semibold"
+            <span class="app-input app-input--otp relative grid place-items-center text-xl font-semibold"
               [class.code-cell-active]="isActivePosition(position)" [class.app-input--filled]="codeDigit(position)">
               {{ codeDigit(position) }}
               @if (isActivePosition(position)) {
@@ -59,14 +59,22 @@
       </form>
       <div class="mt-6 text-center">
         <p class="text-sm text-muted">¿No recibiste el código?</p>
-        <button type="button" (click)="resendCode()"
-          [disabled]="loading() || resending() || resendSeconds() > 0"
+        <button type="button" (click)="resendCode()" [disabled]="loading() || resending() || resendSeconds() > 0"
           class="mt-1 min-h-11 cursor-pointer rounded-lg px-4 text-sm font-semibold text-accent transition-colors hover:text-primary disabled:cursor-not-allowed disabled:text-muted">
           {{ resending() ? 'Enviando…' : resendSeconds() > 0 ? 'Reenviar en ' + resendSeconds() + ' s' : 'Reenviar' }}
         </button>
       </div>
-      } @else {
+      } @else if (profileLoading()) {
+      <h1 id="validate-title" class="text-center text-xl">Consultando tu perfil</h1>
+      <p role="status" class="mt-4 text-center text-muted">Un momento, estamos preparando tu acceso...</p>
+      } @else if (profileFailed()) {
+      <h1 id="validate-title" class="text-center text-xl">No pudimos consultar tu perfil</h1>
+      <button type="button" class="mt-5 min-h-11 w-full rounded-xl bg-primary px-4 text-white"
+        (click)="loadProfile()">Reintentar</button>
+      } @else if (profile()?.profileCompleted === false) {
       <app-complete-profile />
+      } @else {
+      <h1 id="validate-title" class="text-center text-xl">Ingresando...</h1>
       }
 
       <p id="validate-error" class="mt-4 min-h-5 text-center text-sm text-[var(--color-error)]" role="alert">

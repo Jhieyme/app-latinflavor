@@ -1,0 +1,6 @@
+dialog { margin: auto; width: min(420px, calc(100% - 2rem)); padding: 2rem; border: 0; border-radius: 1.5rem; background: white; color: var(--color-primary); box-shadow: 0 24px 80px #30262230; }
+dialog::backdrop { background: #211c1980; backdrop-filter: blur(3px); }
+.notice { text-align: center; }
+h2 { font-size: 1.4rem; font-weight: 600; }
+p { margin-top: 1rem; font-size: .9rem; line-height: 1.6; color: var(--color-text-secondary); }
+button { width: 100%; min-height: 44px; margin-top: 1.5rem; padding: .75rem; border-radius: .75rem; background: var(--color-primary); color: white; cursor: pointer; }

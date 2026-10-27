@@ -1,3 +1,4 @@
+import { CustomerProfileFacade } from '../../services/facades/customer-profile-facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { ToastService } from '../../../../../services/toast/toast.service';
   styleUrl: './validate-code.css',
 })
 export class ValidateCode {
+
   private readonly toast = inject(ToastService);
   private readonly loginOtpFacade = inject(LoginOtpFacade);
   private readonly validateCodeFacade = inject(ValidateCodeFacade);
@@ -23,6 +25,10 @@ export class ValidateCode {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
+  private readonly customerFacade = inject(CustomerProfileFacade);
+  readonly profile = this.userSessionStore.profile;
+  readonly profileLoading = signal(false);
+  readonly profileFailed = signal(false);
   readonly email = this.userSessionStore.email;
   readonly session = this.userSessionStore.session;
   readonly loading = signal(false);
@@ -35,6 +41,7 @@ export class ValidateCode {
 
   constructor() {
     if (!this.email()) void this.router.navigate(['/user/login-otp']);
+    else if (this.session()) this.loadProfile();
   }
 
   updateCode(value: string): void {
@@ -51,32 +58,78 @@ export class ValidateCode {
   }
 
   submit(): void {
-    if (this.loading() || this.resending() || this.session() || !/^\d{6}$/.test(this.code) || !this.email()) return;
+    if (
+      this.loading() ||
+      this.resending() ||
+      this.session() ||
+      !/^\d{6}$/.test(this.code) ||
+      !this.email()
+    )
+      return;
 
     this.loading.set(true);
     this.errorMessage.set('');
 
-    this.validateCodeFacade.execute(this.email(), this.code)
+    this.validateCodeFacade
+      .execute(this.email(), this.code)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.loading.set(false)),
       )
       .subscribe({
-        next: session => {
+        next: (session) => {
           this.userSessionStore.authenticate(session);
           this.code = '';
+          this.loadProfile();
         },
-        error: error => this.toast.showError(error),
+        error: (error) => this.toast.showError(error),
+      });
+  }
+
+  loadProfile(): void {
+    if (this.profileLoading()) return;
+    const userId = this.session()?.userId;
+    if (!userId) {
+      this.profileFailed.set(true);
+      this.toast.show('No se pudo identificar tu cuenta. Vuelve a iniciar sesión.', 'error');
+      return;
+    }
+    this.profileLoading.set(true);
+    this.profileFailed.set(false);
+    this.customerFacade
+      .get(userId)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.profileLoading.set(false)),
+      )
+      .subscribe({
+        next: (customer) => {
+          this.userSessionStore.setProfile(customer);
+          if (this.userSessionStore.signedIn())
+            void this.router.navigate(['/user/home'], { replaceUrl: true });
+        },
+        error: (error: unknown) => {
+          this.profileFailed.set(true);
+          this.toast.showError(error);
+        },
       });
   }
 
   resendCode(): void {
-    if (this.resending() || this.loading() || this.resendSeconds() > 0 || this.session() || !this.email()) return;
+    if (
+      this.resending() ||
+      this.loading() ||
+      this.resendSeconds() > 0 ||
+      this.session() ||
+      !this.email()
+    )
+      return;
 
     this.resending.set(true);
     this.errorMessage.set('');
 
-    this.loginOtpFacade.execute(this.email())
+    this.loginOtpFacade
+      .execute(this.email())
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.resending.set(false)),
@@ -91,15 +144,16 @@ export class ValidateCode {
           timer(1000, 1000)
             .pipe(
               map(() => Math.max(0, Math.ceil((availableAt - Date.now()) / 1000))),
-              takeWhile(seconds => seconds > 0 && !this.session(), true),
+              takeWhile((seconds) => seconds > 0 && !this.session(), true),
               takeUntilDestroyed(this.destroyRef),
             )
-            .subscribe(seconds => {
+            .subscribe((seconds) => {
               this.resendSeconds.set(seconds);
             });
         },
-        error: (error: unknown) => { this.toast.showError(error); },
+        error: (error: unknown) => {
+          this.toast.showError(error);
+        },
       });
   }
-
 }

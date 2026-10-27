@@ -1,3 +1,4 @@
+import { CUSTOMER_PROVIDERS } from '../customer.provider';
 import { Provider } from "@angular/core";
 import { AuthRepository } from "../../../../domain/repository/auth/auth.repository";
 import { AuthRepositoryImpl } from "../../../../data/services/auth/auth.repository.impl";
@@ -7,6 +8,7 @@ import { ValidateCodeFacade } from './services/facades/validate-code-facade';
 
 export const provideLoginOtpFeature = (): Provider[] =>
 ([
+  ...CUSTOMER_PROVIDERS,
   LoginOtpFacade,
   ValidateCodeFacade,
   ...LOGIN_OTP_USECASES,

@@ -41,3 +41,7 @@
     opacity: 0;
   }
 }
+
+.validate-card.profile-card {
+  max-width: 720px;
+}

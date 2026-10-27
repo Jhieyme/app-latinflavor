@@ -1,0 +1,7 @@
+<dialog #dialog aria-labelledby="customer-session-title" aria-describedby="customer-session-message" (cancel)="$event.preventDefault()">
+  <div class="notice">
+    <h2 id="customer-session-title">Vuelve a iniciar sesión</h2>
+    <p id="customer-session-message">Tu sesión ha terminado. Inicia sesión nuevamente para continuar.</p>
+    <button type="button" (click)="accept()" autofocus>Iniciar sesión</button>
+  </div>
+</dialog>

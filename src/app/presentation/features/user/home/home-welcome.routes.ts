@@ -1,8 +1,10 @@
+import { CUSTOMER_PROVIDERS } from '../customer.provider';
 import { Routes } from '@angular/router';
 
 export const HOME_WELCOME_ROUTES: Routes = [
   {
     path: '',
+    providers: CUSTOMER_PROVIDERS,
     children: [
       {
         path: '',

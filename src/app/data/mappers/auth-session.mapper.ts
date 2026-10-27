@@ -28,6 +28,7 @@ export function mapAuthSession(response: SignInResponse): AuthSession {
         ? value.filter((role): role is string => typeof role === 'string')
         : [];
   return {
+    userId: response.userId,
     accessToken: response.accessToken,
     expiresIn: response.expiresIn,
     permissions: response.permissions,

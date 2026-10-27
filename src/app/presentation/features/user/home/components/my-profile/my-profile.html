@@ -1,0 +1,17 @@
+<dialog #dialog aria-label="Mi perfil" (cancel)="close($event)" [attr.aria-busy]="loading() || form()?.saving()">
+  <div class="dialog-actions">
+    <button type="button" (click)="close()" [disabled]="form()?.saving()" aria-label="Cerrar mi perfil" autofocus>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+    </button>
+  </div>
+  <div class="profile-content">
+    @if (loading()) {
+      <p role="status">Cargando tu perfil...</p>
+    } @else if (failed()) {
+      <p role="status">No se pudo cargar tu perfil.</p>
+      <button class="retry" type="button" (click)="load()">Reintentar</button>
+    } @else if (ready()) {
+      <app-complete-profile [editing]="true" />
+    }
+  </div>
+</dialog>

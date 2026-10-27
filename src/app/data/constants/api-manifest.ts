@@ -9,7 +9,7 @@ export class ApiManifest {
     };
 
     static readonly CUSTOMER = {
-        CUSTOMER: `${environment.API_BASE_URL}/customer-service/v1/customers`,
+        CUSTOMER: `${environment.CUSTOMER_API_BASE_URL}/customer-service/v1/customers`,
     };
 
 }
