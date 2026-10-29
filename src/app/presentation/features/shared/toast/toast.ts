@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnDestroy, afterRenderEffect, inject, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  afterRenderEffect,
+  inject,
+  viewChild,
+} from '@angular/core';
 import { ToastService } from '../../../services/toast/toast.service';
 
 @Component({
@@ -7,6 +14,7 @@ import { ToastService } from '../../../services/toast/toast.service';
   styleUrl: './toast.css',
 })
 export class Toast implements OnDestroy {
+
   readonly toast = inject(ToastService);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
@@ -18,7 +26,9 @@ export class Toast implements OnDestroy {
       if (!panel) return;
       panel.hidePopover();
       const dialogs = this.host.nativeElement.ownerDocument.querySelectorAll('dialog[open]');
-      const target = message ? dialogs.item(dialogs.length - 1) ?? this.host.nativeElement : this.host.nativeElement;
+      const target = message
+        ? (dialogs.item(dialogs.length - 1) ?? this.host.nativeElement)
+        : this.host.nativeElement;
       target.appendChild(panel);
       if (message) panel.showPopover();
     });

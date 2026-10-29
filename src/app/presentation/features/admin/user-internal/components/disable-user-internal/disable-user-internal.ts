@@ -9,7 +9,6 @@ import { ToastService } from '../../../../../services/toast/toast.service';
 @Component({
   selector: 'app-disable-user-internal',
   templateUrl: './disable-user-internal.html',
-  styleUrl: './disable-user-internal.css',
 })
 export class DisableUserInternalDialog implements AfterViewInit {
   @ViewChild('dialog', { static: true }) private dialog!: ElementRef<HTMLDialogElement>;

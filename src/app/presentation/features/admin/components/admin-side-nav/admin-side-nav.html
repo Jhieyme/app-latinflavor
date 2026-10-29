@@ -1,0 +1,166 @@
+<aside
+  id="admin-navigation"
+  aria-label="Menú de administración"
+  class="h-full border-r border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+>
+  <div class="flex min-h-full flex-col">
+    <header
+      class="flex min-h-20 flex-col items-center justify-between gap-2 border-b border-[var(--color-border)] px-2 py-3 sm:flex-row sm:px-5"
+    >
+      <img
+        src="/icons/latin-flavor.svg"
+        alt="Latin Flavor"
+        width="145"
+        height="49"
+        class="h-auto w-14 sm:w-[145px]"
+      />
+      <button
+        type="button"
+        (click)="dismissed.emit()"
+        aria-label="Ocultar menú"
+        title="Ocultar menú"
+        class="grid size-11 shrink-0 cursor-pointer place-items-center rounded-xl text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-secondary-light)] hover:text-[var(--color-text-primary)]"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m14 7-5 5 5 5" />
+        </svg>
+      </button>
+    </header>
+    <nav aria-label="Gestión del administrador" class="flex-1 space-y-1.5 px-2 py-3 sm:px-3">
+      <a
+        routerLink="/admin/user-internal"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        aria-label="Usuarios"
+        title="Usuarios"
+        class="flex min-h-12 items-center gap-3 rounded-xl px-3 py-3 sm:px-4 text-sm font-medium transition-colors hover:bg-[var(--color-secondary-light)] aria-[current=page]:bg-[var(--color-primary)] aria-[current=page]:text-white aria-[current=page]:shadow-[0_4px_12px_color-mix(in_srgb,var(--color-primary-dark)_8%,transparent)]"
+      >
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v3" />
+        </svg>
+        <span class="hidden sm:inline">Usuarios</span>
+      </a>
+      <a
+        routerLink="/admin/floor/zones"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        aria-label="Zonas"
+        title="Zonas"
+        class="flex min-h-12 items-center gap-3 rounded-xl px-3 py-3 sm:px-4 text-sm font-medium transition-colors hover:bg-[var(--color-secondary-light)] aria-[current=page]:bg-[var(--color-primary)] aria-[current=page]:text-white"
+      >
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>
+        <span class="hidden sm:inline">Zonas</span>
+      </a>
+      <a
+        routerLink="/admin/floor/tables"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        aria-label="Mesas"
+        title="Mesas"
+        class="flex min-h-12 items-center gap-3 rounded-xl px-3 py-3 sm:px-4 text-sm font-medium transition-colors hover:bg-[var(--color-secondary-light)] aria-[current=page]:bg-[var(--color-primary)] aria-[current=page]:text-white"
+      >
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <rect x="3" y="6" width="18" height="5" rx="1" />
+          <path d="M5 11v9m14-9v9M5 16h14" />
+        </svg>
+        <span class="hidden sm:inline">Mesas</span>
+      </a>
+
+      <a
+        routerLink="/admin/schedule"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        aria-label="Horarios"
+        title="Horarios"
+        class="flex min-h-12 items-center gap-3 rounded-xl px-3 py-3 sm:px-4 text-sm font-medium transition-colors hover:bg-[var(--color-secondary-light)] aria-[current=page]:bg-[var(--color-primary)] aria-[current=page]:text-white"
+      >
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+        <span class="hidden sm:inline">Horarios</span>
+      </a>
+    </nav>
+    <footer class="m-2 rounded-2xl border border-[var(--color-border)] bg-white p-1 sm:m-3 sm:p-3">
+      <div
+        class="mb-3 hidden items-center gap-3 border-b border-[var(--color-border-light)] px-1 pb-3 sm:flex"
+      >
+        <span
+          class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--color-secondary-light)] text-sm font-semibold text-[var(--color-text-primary)]"
+          aria-hidden="true"
+          >{{ username().slice(0, 1).toUpperCase() }}</span
+        >
+        <div class="min-w-0">
+          <p class="truncate text-sm font-semibold text-[var(--color-text-primary)]">
+            {{ username() }}
+          </p>
+          <p class="mt-0.5 text-[11px] text-[var(--color-text-muted)]">Activo(a)</p>
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="signedOut.emit()"
+        aria-label="Cerrar sesión"
+        title="Cerrar sesión"
+        class="flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 sm:px-4 text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[color-mix(in_srgb,var(--color-error)_7%,white)] hover:text-[var(--color-error)]"
+      >
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3v9M6.34 6.34a8 8 0 1 0 11.32 0" />
+        </svg>
+        <span class="hidden sm:inline">Cerrar sesión</span>
+      </button>
+    </footer>
+  </div>
+</aside>

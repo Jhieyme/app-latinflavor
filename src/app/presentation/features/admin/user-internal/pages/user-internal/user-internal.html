@@ -1,34 +1,24 @@
-<main class="admin-shell min-h-dvh bg-white text-primary">
-  <header
-    class="admin-topbar flex flex-wrap items-center justify-between gap-4 border-b border-border bg-white px-6 py-4 sm:px-10"
-  >
-    <div class="flex min-w-0 flex-wrap items-center gap-3 sm:gap-5">
-      <img src="/icons/latin-flavor.svg" alt="Latin Flavor" width="145" height="49" />
-    </div>
-    <button
-      type="button"
-      (click)="signOut()"
-      class="min-h-11 cursor-pointer rounded-xl border border-border px-4 text-sm hover:bg-cream"
-    >
-      Cerrar sesión
-    </button>
-  </header>
+<main
+  class="admin-shell min-h-full bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]"
+>
   <section
-    class="workspace mx-auto w-full max-w-[1520px] px-4 py-10 sm:px-6 lg:px-8"
+    class="pt-5 pb-6 max-[700px]:pt-4 mx-auto w-full max-w-[1520px] px-4 sm:px-6 lg:px-8"
     aria-labelledby="users-title"
     [attr.aria-busy]="loading()"
   >
-    <div class="hero mb-7 flex flex-wrap items-center justify-between gap-4">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 id="users-title" class="page-title">Hola, {{ name_user() }}</h1>
-        <p class="mt-2 text-sm text-muted">Tu equipo, sus datos y accesos, en un solo lugar.</p>
+        <h1 id="users-title" class="text-2xl font-semibold tracking-tight sm:text-3xl">Usuarios</h1>
+        <p class="mt-2 text-sm text-[var(--color-text-secondary)]">
+          Gestiona tu equipo y sus accesos.
+        </p>
       </div>
       @if (canCreate()) {
         <button
           type="button"
           (click)="creating.set(true)"
           [disabled]="loading()"
-          class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-dark)] sm:w-auto"
+          class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-dark)] sm:w-auto"
         >
           <svg
             width="18"
@@ -47,41 +37,58 @@
       }
     </div>
     @if (!canRead()) {
-      <p role="status" class="p-10 text-center text-muted">Tu cuenta no tiene permiso para visualizar usuarios internos.</p>
+      <p role="status" class="p-10 text-center text-[var(--color-text-secondary)]">
+        Tu cuenta no tiene permiso para visualizar usuarios internos.
+      </p>
     } @else {
-      <div class="overview" aria-label="Resumen del personal">
-        <div class="metric">
-          <span class="metric-icon" aria-hidden="true"
-            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="9" cy="8" r="3" />
-              <path
-                d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v3"
-              /></svg></span
-          ><span>Total de usuarios</span><strong>{{ totalElements() }}</strong
-          ><small>Resultados de la búsqueda</small>
+      <div class="mb-4 grid grid-cols-3 gap-3 max-[540px]:gap-2" aria-label="Resumen del personal">
+        <div
+          class="min-w-0 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 max-[540px]:px-3"
+        >
+          <p class="text-xs font-medium leading-4 text-[var(--color-text-secondary)]">Resultados</p>
+          <p
+            class="mt-1 text-2xl font-semibold leading-7 tabular-nums tracking-tight text-[var(--color-text-primary)]"
+          >
+            {{ totalElements() }}
+          </p>
+          <p class="mt-0.5 text-[10px] leading-4 text-[var(--color-text-secondary)]">
+            Total de la búsqueda
+          </p>
         </div>
-        <div class="metric">
-          <span class="metric-icon" aria-hidden="true"
-            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="9" />
-              <path d="m8 12 3 3 5-6" /></svg></span
-          ><span>Activos</span><strong>{{ activeCount() }}</strong
-          ><small>Activos en la página actual</small>
+        <div
+          class="min-w-0 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 max-[540px]:px-3"
+        >
+          <p class="text-xs font-medium leading-4 text-[var(--color-text-secondary)]">Activos</p>
+          <p
+            class="mt-1 text-2xl font-semibold leading-7 tabular-nums tracking-tight text-[var(--color-text-primary)]"
+          >
+            {{ activeCount() }}
+          </p>
+          <p class="mt-0.5 text-[10px] leading-4 text-[var(--color-text-secondary)]">
+            En esta página
+          </p>
         </div>
-        <div class="metric">
-          <span class="metric-icon" aria-hidden="true"
-            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M9 8v8m6-8v8" /></svg></span
-          ><span>Inactivos</span><strong>{{ users().length - activeCount() }}</strong
-          ><small>Inactivos en la página actual</small>
+        <div
+          class="min-w-0 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 max-[540px]:px-3"
+        >
+          <p class="text-xs font-medium leading-4 text-[var(--color-text-secondary)]">Inactivos</p>
+          <p
+            class="mt-1 text-2xl font-semibold leading-7 tabular-nums tracking-tight text-[var(--color-text-primary)]"
+          >
+            {{ users().length - activeCount() }}
+          </p>
+          <p class="mt-0.5 text-[10px] leading-4 text-[var(--color-text-secondary)]">
+            En esta página
+          </p>
         </div>
       </div>
-      <div class="directory-card">
-        <div class="directory-toolbar">
-          <div class="toolbar">
-            <div class="search-tools">
-              <div class="search-field">
+      <div class="overflow-hidden border border-[var(--color-border)] rounded-2xl bg-white">
+        <div class="p-[1.6rem] max-[700px]:p-4">
+          <div
+            class="flex items-center justify-between gap-4 max-[700px]:flex-col max-[700px]:items-stretch"
+          >
+            <div class="flex items-center gap-2 w-full min-w-0 max-w-[510px]">
+              <div class="w-full max-w-[460px] min-w-0 max-[700px]:max-w-none">
                 <label class="sr-only" for="user-search">Buscar personal interno</label
                 ><app-input
                   inputId="user-search"
@@ -95,7 +102,7 @@
                 type="button"
                 (click)="load()"
                 [disabled]="loading()"
-                class="refresh-icon"
+                class="grid place-items-center size-12 shrink-0 border-0 bg-transparent rounded-xl cursor-pointer text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-wait [&_svg]:block [&_svg]:size-5 [&_svg]:aspect-square [&_svg]:overflow-visible"
                 aria-label="Actualizar usuarios"
                 title="Actualizar usuarios"
               >
@@ -117,10 +124,13 @@
                 </svg>
               </button>
             </div>
-            <div class="filters" role="group" aria-label="Filtrar por estado">
+            <div
+              class="flex shrink-0 gap-[.2rem] p-[.3rem] rounded-2xl bg-[var(--color-secondary-light)] max-[700px]:flex-wrap [&_button]:min-h-11 [&_button]:px-4 [&_button]:py-2 [&_button]:cursor-pointer [&_button]:rounded-xl [&_button]:text-[.8rem] [&_button]:text-[var(--color-text-secondary)] [&_button[aria-pressed=true]]:bg-white [&_button[aria-pressed=true]]:text-[var(--color-primary)] [&_button[aria-pressed=true]]:font-semibold [&_button[aria-pressed=true]]:shadow-sm max-[700px]:[&_button]:flex-1 max-[700px]:[&_button]:px-[.65rem]"
+              role="group"
+              aria-label="Filtrar por estado"
+            >
               <button
                 type="button"
-                [class.selected]="status() === 'all'"
                 [attr.aria-pressed]="status() === 'all'"
                 (click)="onStatusChange('all')"
               >
@@ -128,7 +138,6 @@
               </button>
               <button
                 type="button"
-                [class.selected]="status() === 'active'"
                 [attr.aria-pressed]="status() === 'active'"
                 (click)="onStatusChange('active')"
               >
@@ -136,7 +145,6 @@
               </button>
               <button
                 type="button"
-                [class.selected]="status() === 'inactive'"
                 [attr.aria-pressed]="status() === 'inactive'"
                 (click)="onStatusChange('inactive')"
               >
@@ -145,53 +153,113 @@
             </div>
           </div>
         </div>
-        <details class="search-options">
+        <!-- <details
+          class="-mt-4 mx-[1.6rem] mb-4 text-xs text-[var(--color-text-secondary)] max-[700px]:mx-4 [&_summary]:cursor-pointer [&_summary]:py-2"
+        >
           <summary>Opciones de búsqueda y orden</summary>
-          <div class="search-options-fields">
-            <label>Buscar en
-              <select class="app-input" [ngModel]="field()" (ngModelChange)="onFieldChange($event)">
+          <div
+            class="flex flex-wrap gap-3 pt-2 [&_label]:flex-[1_1_150px] [&_select]:mt-[.4rem] [&_select]:text-[.8rem]"
+          >
+            <label
+              >Buscar en
+              <select
+                class="app-input select-control"
+                [ngModel]="field()"
+                (ngModelChange)="onFieldChange($event)"
+              >
                 <option value="">Todos los campos</option>
-                @for (option of fields; track option.value) { <option [value]="option.value">{{ option.label }}</option> }
+                @for (option of fields; track option.value) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
               </select>
             </label>
-            <label>Ordenar por
-              <select class="app-input" [ngModel]="sort()" (ngModelChange)="sort.set($event); onCriteriaChange()">
-                @for (option of fields; track option.value) { <option [value]="option.value">{{ option.label }}</option> }
+            <label
+              >Ordenar por
+              <select
+                class="app-input select-control"
+                [ngModel]="sort()"
+                (ngModelChange)="sort.set($event); onCriteriaChange()"
+              >
+                @for (option of fields; track option.value) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
                 <option value="active">Estado</option>
               </select>
             </label>
-            <label>Orden
-              <select class="app-input" [ngModel]="direction()" (ngModelChange)="direction.set($event); onCriteriaChange()">
-                <option value="asc">Ascendente</option><option value="desc">Descendente</option>
+            <label
+              >Orden
+              <select
+                class="app-input select-control"
+                [ngModel]="direction()"
+                (ngModelChange)="direction.set($event); onCriteriaChange()"
+              >
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
               </select>
             </label>
           </div>
-        </details>
+        </details> -->
         @if (loading()) {
-          <p role="status" class="p-10 text-center text-muted">Cargando personal interno...</p>
+          <p role="status" class="p-10 text-center text-[var(--color-text-secondary)]">
+            Cargando personal interno...
+          </p>
         } @else if (errorMessage()) {
           <div class="p-10 text-center">
             <p role="status">{{ errorMessage() }}</p>
-            <button type="button" class="list-button" (click)="load()">Reintentar</button>
+            <button
+              type="button"
+              class="min-h-11 py-2 px-3 border-0 rounded-xl cursor-pointer text-[var(--color-primary)] bg-transparent hover:bg-[var(--color-secondary-light)] disabled:opacity-40 disabled:cursor-not-allowed"
+              (click)="load()"
+            >
+              Reintentar
+            </button>
           </div>
         } @else {
-          <app-user-internal-table [users]="users()" [canDisable]="canDisable()" [canEdit]="canEdit()"
-            (detailUser)="detailUser.set($event)" (editUser)="editingUser.set($event)"
-            (disableUser)="disablingUser.set($event)" (clearFilters)="resetFilters()" />
+          <app-user-internal-table
+            [users]="users()"
+            [canDisable]="canDisable()"
+            [canEdit]="canEdit()"
+            (detailUser)="detailUser.set($event)"
+            (editUser)="editingUser.set($event)"
+            (disableUser)="disablingUser.set($event)"
+            (clearFilters)="resetFilters()"
+          />
         }
-        <footer class="table-footer pagination">
+        <footer
+          class="flex justify-between gap-4 py-[1.2rem] px-7 border-t border-[var(--color-border)] text-[var(--color-text-secondary)] text-[.72rem] max-[700px]:p-4 max-[700px]:flex-wrap flex-wrap items-center"
+        >
           <span role="status">
-            Mostrando {{ firstResult() }}–{{ lastResult() }} de {{ totalElements() }} usuarios
-
+            Mostrando {{ firstResult() }} – {{ lastResult() }} de {{ totalElements() }} usuarios
           </span>
-          <div class="pagination-controls">
+          <div class="pagination-controls flex items-center flex-wrap gap-2">
             <label for="user-size">Por página</label>
-            <select id="user-size" class="app-input" [ngModel]="size()" (ngModelChange)="size.set($event); onCriteriaChange()">
-              @for (value of [3, 10, 20, 50, 100]; track value) { <option [ngValue]="value">{{ value }}</option> }
+            <select
+              id="user-size"
+              class="app-input select-control"
+              [ngModel]="size()"
+              (ngModelChange)="size.set($event); onCriteriaChange()"
+            >
+              @for (value of [5, 10, 20, 50, 100]; track value) {
+                <option [ngValue]="value">{{ value }}</option>
+              }
             </select>
-            <button type="button" class="list-button" (click)="goToPage(page() - 1)" [disabled]="loading() || !!errorMessage() || page() === 0">Anterior</button>
+            <button
+              type="button"
+              class="min-h-11 py-2 px-3 border-0 rounded-xl cursor-pointer text-[var(--color-primary)] bg-transparent hover:bg-[var(--color-secondary-light)] disabled:opacity-40 disabled:cursor-not-allowed"
+              (click)="goToPage(page() - 1)"
+              [disabled]="loading() || !!errorMessage() || page() === 0"
+            >
+              Anterior
+            </button>
             <span>Página {{ totalPages() ? page() + 1 : 0 }} de {{ totalPages() }}</span>
-            <button type="button" class="list-button" (click)="goToPage(page() + 1)" [disabled]="loading() || !!errorMessage() || page() + 1 >= totalPages()">Siguiente</button>
+            <button
+              type="button"
+              class="min-h-11 py-2 px-3 border-0 rounded-xl cursor-pointer text-[var(--color-primary)] bg-transparent hover:bg-[var(--color-secondary-light)] disabled:opacity-40 disabled:cursor-not-allowed"
+              (click)="goToPage(page() + 1)"
+              [disabled]="loading() || !!errorMessage() || page() + 1 >= totalPages()"
+            >
+              Siguiente
+            </button>
           </div>
         </footer>
       </div>

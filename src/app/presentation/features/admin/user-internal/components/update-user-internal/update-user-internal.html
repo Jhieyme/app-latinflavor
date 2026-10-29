@@ -1,75 +1,143 @@
-<dialog #dialog aria-labelledby="edit-title" (cancel)="cancel($event)">
-  <header>
-    <h2 id="edit-title">Modificar usuario</h2>
+<dialog
+  class="m-auto w-[min(720px,calc(100%_-_2rem))] max-h-[calc(100dvh_-_2rem)] p-0 border border-transparent rounded-[1.25rem] bg-white text-[var(--color-text-primary)] shadow-[0_24px_80px_color-mix(in_srgb,var(--color-primary-dark)_14%,transparent)] backdrop:bg-slate-900/40 backdrop:backdrop-blur-[3px]"
+  #dialog aria-labelledby="edit-title" (cancel)="cancel($event)">
+  <header class="flex items-center justify-between gap-4 p-6 border-b border-[var(--color-border)]">
+    <h2 class="text-[1.4rem] font-semibold" id="edit-title">Modificar usuario</h2>
+    <button type="button" (click)="cancel()" [disabled]="saving() !== null" aria-label="Cerrar modal"
+      class="grid size-11 shrink-0 place-items-center rounded-xl text-[var(--color-text-secondary)] cursor-pointer transition-colors hover:bg-[var(--color-background-secondary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)] disabled:opacity-50 disabled:cursor-not-allowed">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
   </header>
-  <div class="content" [attr.aria-busy]="saving() !== null">
-    <form #infoForm="ngForm" (ngSubmit)="saveInfo(infoForm)" aria-labelledby="info-title">
-      <h3 id="info-title">Informaci&#243;n b&#225;sica</h3>
-      @if (!canUpdate()) {<p class="help">Tu rol y permisos no permiten editar estos campos.</p>}
-      <div class="fields">
-        <div><label for="edit-firstName">Nombres</label><app-input inputId="edit-firstName" name="firstName"
-            [(ngModel)]="firstName" required pattern=".*\S.*" [disabled]="!canUpdate() || saving() !== null" /></div>
-        <div><label for="edit-paternalLastName">Apellido paterno</label><app-input inputId="edit-paternalLastName"
-            name="paternalLastName" [(ngModel)]="paternalLastName" required pattern=".*\S.*"
-            [disabled]="!canUpdate() || saving() !== null" /></div>
-        <div><label for="edit-maternalLastName">Apellido materno</label><app-input inputId="edit-maternalLastName"
-            name="maternalLastName" [(ngModel)]="maternalLastName" required pattern=".*\S.*"
-            [disabled]="!canUpdate() || saving() !== null" /></div>
-        <div><label for="edit-phoneNumber">Celular</label><app-input inputId="edit-phoneNumber" name="phoneNumber"
-            [(ngModel)]="phoneNumber" required inputmode="numeric" pattern="9[0-9]{8}" maxlength="9"
-            [disabled]="!canUpdate() || saving() !== null" /></div>
-        <div><label for="edit-dni">DNI</label><app-input inputId="edit-dni" name="dni" [(ngModel)]="dni" required
-            inputmode="numeric" pattern="[0-9]{8}" maxlength="8" [disabled]="!canUpdate() || saving() !== null" /></div>
-        <div><label for="edit-active">Estado</label>
-          <select id="edit-active" class="app-input" name="active" [(ngModel)]="active"
+  <div class="p-6" [attr.aria-busy]="saving() !== null">
+    <div class="mb-6 grid grid-cols-2 gap-1 rounded-xl bg-[var(--color-background-secondary)] p-1"
+      role="tablist" aria-label="Datos del usuario" (keydown)="onTabKeydown($event)">
+      <button id="edit-tab-info" type="button" role="tab" aria-controls="edit-panel-info"
+        [attr.aria-selected]="activeTab() === 'info'" [tabIndex]="activeTab() === 'info' ? 0 : -1"
+        [disabled]="saving() !== null" (click)="selectTab('info')"
+        class="min-h-11 rounded-lg px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors cursor-pointer aria-selected:bg-white aria-selected:text-[var(--color-primary)] aria-selected:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)] disabled:cursor-not-allowed">
+        Informaci&#243;n b&#225;sica
+      </button>
+      <button id="edit-tab-access" type="button" role="tab" aria-controls="edit-panel-access"
+        [attr.aria-selected]="activeTab() === 'access'" [tabIndex]="activeTab() === 'access' ? 0 : -1"
+        [disabled]="saving() !== null" (click)="selectTab('access')"
+        class="min-h-11 rounded-lg px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors cursor-pointer aria-selected:bg-white aria-selected:text-[var(--color-primary)] aria-selected:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)] disabled:cursor-not-allowed">
+        Rol y permisos
+      </button>
+    </div>
+    <form id="edit-panel-info" role="tabpanel" [hidden]="activeTab() !== 'info'"
+      #infoForm="ngForm" (ngSubmit)="saveInfo(infoForm)" aria-labelledby="edit-tab-info">
+      @if (!canUpdate()) {
+      <p class="text-[var(--color-text-secondary)] text-[.8rem] mt-2 mb-4 [overflow-wrap:anywhere]">
+        Tu rol y permisos no permiten editar estos campos.
+      </p>
+      }
+      <div class="grid grid-cols-2 gap-4 max-[540px]:grid-cols-1">
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-firstName">Nombres</label><app-input
+            inputId="edit-firstName" name="firstName" [(ngModel)]="firstName" required pattern=".*\S.*"
+            [disabled]="!canUpdate() || saving() !== null" />
+        </div>
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-paternalLastName">Apellido paterno</label><app-input
+            inputId="edit-paternalLastName" name="paternalLastName" [(ngModel)]="paternalLastName" required
+            pattern=".*\S.*" [disabled]="!canUpdate() || saving() !== null" />
+        </div>
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-maternalLastName">Apellido materno</label><app-input
+            inputId="edit-maternalLastName" name="maternalLastName" [(ngModel)]="maternalLastName" required
+            pattern=".*\S.*" [disabled]="!canUpdate() || saving() !== null" />
+        </div>
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-phoneNumber">Celular</label><app-input
+            inputId="edit-phoneNumber" name="phoneNumber" [(ngModel)]="phoneNumber" required inputmode="numeric"
+            pattern="9[0-9]{8}" maxlength="9" [disabled]="!canUpdate() || saving() !== null" />
+        </div>
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-dni">DNI</label><app-input inputId="edit-dni"
+            name="dni" [(ngModel)]="dni" required inputmode="numeric" pattern="[0-9]{8}" maxlength="8"
+            [disabled]="!canUpdate() || saving() !== null" />
+        </div>
+        <div>
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-active">Estado</label>
+          <select id="edit-active" class="app-input select-control" name="active" [(ngModel)]="active"
             [disabled]="!canUpdate() || saving() !== null">
             <option [ngValue]="true">Activo</option>
             <option [ngValue]="false">Inactivo</option>
           </select>
         </div>
       </div>
-      @if (canUpdate()) {<button class="primary" type="submit" [disabled]="saving() !== null">{{ saving() === 'info' ?
-        'Guardando...' : 'Guardar datos' }}</button>}
     </form>
-    <form #accessForm="ngForm" (ngSubmit)="saveAccess(accessForm)" aria-labelledby="access-title">
-      <h3 id="access-title">Rol y permisos</h3>
-      @if (!canAccess()) {<p class="help">Tu rol y permisos no permiten modificar el acceso.</p>}
-      <div class="fields">
-        <div class="wide"><label for="edit-role">Rol</label>
+    <form id="edit-panel-access" role="tabpanel" [hidden]="activeTab() !== 'access'"
+      #accessForm="ngForm" (ngSubmit)="saveAccess(accessForm)" aria-labelledby="edit-tab-access">
+      @if (!canAccess()) {
+      <p class="text-[var(--color-text-secondary)] text-[.8rem] mt-2 mb-4 [overflow-wrap:anywhere]">
+        Tu rol y permisos no permiten modificar el acceso.
+      </p>
+      }
+      <div class="grid grid-cols-2 gap-4 max-[540px]:grid-cols-1">
+        <div class="col-span-full">
+          <label class="block mb-[.4rem] text-[.85rem]" for="edit-role">Rol</label>
           <select id="edit-role" class="app-input select-control" name="role" [(ngModel)]="role" required
             [disabled]="!canAccess() || saving() !== null">
             <option value="" disabled>Selecciona un rol</option>
             <option value="INTERNAL">INTERNAL</option>
             <option value="ADMIN">ADMIN</option>
           </select>
-          @if (!role) {<p class="help">Roles actuales: {{ user().roles.join(', ') || 'Sin roles' }}. Selecciona el rol
-            que reemplazar&#225; el acceso actual.</p>}
+          @if (!role) {
+          <p class="text-[var(--color-text-secondary)] text-[.8rem] mt-2 mb-4 [overflow-wrap:anywhere]">
+            Roles actuales: {{ user().roles.join(', ') || 'Sin roles' }}. Selecciona el rol que
+            reemplazar&#225; el acceso actual.
+          </p>
+          }
         </div>
-        <div class="wide"><label id="edit-permissions-label">Permisos</label>
+        <div class="col-span-full">
+          <label class="block mb-[.4rem] text-[.85rem]" id="edit-permissions-label">Permisos</label>
           <details class="permissions-dropdown">
-            <summary class="app-input select-control" aria-labelledby="edit-permissions-label edit-permissions-value"
+            <summary
+              class="app-input select-control list-none cursor-pointer [&::-webkit-details-marker]:hidden [&_span]:block [&_span]:truncate aria-disabled:bg-[var(--color-input-disabled)] aria-disabled:cursor-not-allowed"
+              aria-labelledby="edit-permissions-label edit-permissions-value"
               [attr.aria-disabled]="!canAccess() || saving() !== null" (click)="permissionsClick($event)">
-              <span id="edit-permissions-value">{{ selectedPermissions.length === 1 ? selectedPermissions[0] :
-                selectedPermissions.length ? selectedPermissions.length + ' permisos seleccionados' : 'Selecciona
-                permisos' }}</span>
+              <span id="edit-permissions-value">{{
+                selectedPermissions.length === 1
+                ? selectedPermissions[0]
+                : selectedPermissions.length
+                ? selectedPermissions.length + ' permisos seleccionados'
+                : 'Selecciona
+                permisos'
+                }}</span>
             </summary>
-            <div class="permissions-options" role="group" aria-labelledby="edit-permissions-label">
+            <div
+              class="max-h-[220px] overflow-y-auto mt-[.4rem] p-[.4rem] border border-[var(--color-border)] rounded-xl bg-white shadow-[0_5px_18px_color-mix(in_srgb,var(--color-primary-dark)_6%,transparent)]"
+              role="group" aria-labelledby="edit-permissions-label">
               @for (permission of permissionOptions(); track permission) {
-              <label class="permission-option"><input type="checkbox" [checked]="selectedPermissions.includes(permission)"
+              <label
+                class="flex items-center gap-[.6rem] min-h-11 m-0 p-2 rounded-[.4rem] cursor-pointer text-[.8rem] font-medium [overflow-wrap:anywhere] hover:bg-[var(--color-secondary-light)] [&_input]:accent-[var(--color-primary)] [&_input]:shrink-0"><input
+                  type="checkbox" [checked]="selectedPermissions.includes(permission)"
                   (change)="togglePermission(permission)" [disabled]="!canAccess() || saving() !== null" />
                 <span>{{ permission }}</span>
               </label>
               }
             </div>
           </details>
-          @if (!canAccess()) {<p class="help">{{ selectedPermissions.join(', ') || 'Sin permisos' }}</p>}
+          @if (!canAccess()) {
+          <p class="text-[var(--color-text-secondary)] text-[.8rem] mt-2 mb-4 [overflow-wrap:anywhere]">
+            {{ selectedPermissions.join(', ') || 'Sin permisos' }}
+          </p>
+          }
         </div>
       </div>
-      @if (canAccess()) {<button type="submit" class="primary" [disabled]="saving() !== null">{{ saving() === 'access' ?
-        'Guardando...' : 'Guardar acceso' }}</button>}
     </form>
-    <p role="alert" class="error">{{ error() }}</p>
-    <p role="status" class="success">{{ success() }}</p>
-    <footer><button type="button" (click)="cancel()" [disabled]="saving() !== null">Cerrar</button></footer>
+    <p role="alert" class="text-[var(--color-error)]">{{ error() }}</p>
+    @if (activeTab() === 'info' ? canUpdate() : canAccess()) {
+    <footer class="flex justify-end mt-6">
+      <button type="submit" [attr.form]="activeTab() === 'info' ? 'edit-panel-info' : 'edit-panel-access'"
+        class="bg-[var(--color-primary)] text-white min-h-11 py-[.6rem] px-4 rounded-xl cursor-pointer transition-colors hover:bg-[var(--color-primary-dark)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="saving() !== null">
+        {{ saving() ? 'Guardando...' : activeTab() === 'info' ? 'Guardar datos' : 'Guardar acceso' }}
+      </button>
+    </footer>
+    }
   </div>
 </dialog>

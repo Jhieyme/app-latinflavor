@@ -1,0 +1,125 @@
+<dialog
+  #dialog
+  (cancel)="close($event)"
+  aria-labelledby="schedule-dialog-title"
+  class="m-auto w-[min(600px,calc(100%_-_2rem))] max-h-[calc(100dvh_-_2rem)] rounded-2xl border-0 bg-white p-0 text-[var(--color-text-primary)] shadow-xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
+>
+  <header class="flex items-center justify-between gap-4 border-b border-[var(--color-border)] p-6">
+    <h2 id="schedule-dialog-title" class="text-xl font-semibold">
+      {{ detail() ? 'Detalle del horario' : recordId() ? 'Editar horario' : 'Nuevo horario' }}
+    </h2>
+    <button
+      type="button"
+      (click)="close()"
+      [disabled]="saving()"
+      aria-label="Cerrar modal"
+      class="icon-button"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+  </header>
+  <div class="p-6" [attr.aria-busy]="loading() || saving()">
+    @if (loading()) {
+      <p role="status" class="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+        Cargando horario...
+      </p>
+    } @else if (failed()) {
+      <p class="text-sm text-[var(--color-text-secondary)]">No se pudo cargar el horario.</p>
+      <button type="button" class="secondary-button mt-4" (click)="load()">Reintentar</button>
+    } @else if (detail()) {
+      <dl class="grid grid-cols-2 gap-5 text-sm max-[480px]:grid-cols-1">
+        <div>
+          <dt class="text-[var(--color-text-secondary)]">Día</dt>
+          <dd class="mt-1 font-medium">{{ day ? labels[day] : '' }}</dd>
+        </div>
+        <div>
+          <dt class="text-[var(--color-text-secondary)]">Intervalo de reservas</dt>
+          <dd class="mt-1 font-medium">{{ interval }} min</dd>
+        </div>
+        <div>
+          <dt class="text-[var(--color-text-secondary)]">Apertura</dt>
+          <dd class="mt-1 font-medium tabular-nums">{{ openingTime }}</dd>
+        </div>
+        <div>
+          <dt class="text-[var(--color-text-secondary)]">Cierre</dt>
+          <dd class="mt-1 font-medium tabular-nums">{{ closingTime }}</dd>
+        </div>
+      </dl>
+    } @else {
+      <form #form="ngForm" (ngSubmit)="submit(form)">
+        <div class="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
+          <label class="col-span-full text-sm"
+            >Día de la semana<select
+              class="app-input select-control mt-2"
+              name="day"
+              [(ngModel)]="day"
+              required
+              [disabled]="saving() || !!recordId()"
+            >
+              <option value="" disabled>Selecciona un día</option>
+              @for (option of days; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select></label
+          >
+          @if (recordId()) {
+            <p class="col-span-full text-xs text-[var(--color-text-secondary)]">
+              El día del horario no se puede modificar.
+            </p>
+          }
+          <label class="text-sm"
+            >Apertura<input
+              class="app-input mt-2"
+              type="time"
+              step="any"
+              name="openingTime"
+              [(ngModel)]="openingTime"
+              required
+              [disabled]="saving()"
+          /></label>
+          <label class="text-sm"
+            >Cierre<input
+              class="app-input mt-2"
+              type="time"
+              step="any"
+              name="closingTime"
+              [(ngModel)]="closingTime"
+              required
+              [disabled]="saving()"
+          /></label>
+          <label class="col-span-full text-sm"
+            >Intervalo de reservas (minutos)<input
+              class="app-input mt-2"
+              type="number"
+              step="any"
+              min="0"
+              name="interval"
+              [(ngModel)]="interval"
+              required
+              [disabled]="saving()"
+              aria-describedby="interval-hint"
+          /></label>
+          <p id="interval-hint" class="col-span-full text-xs text-[var(--color-text-secondary)]">
+            Por ejemplo, 30 minutos entre horarios disponibles para reservar.
+          </p>
+        </div>
+        <footer class="mt-6 flex justify-end">
+          <button type="submit" class="primary-button" [disabled]="saving()">
+            {{ saving() ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </footer>
+      </form>
+    }
+  </div>
+</dialog>

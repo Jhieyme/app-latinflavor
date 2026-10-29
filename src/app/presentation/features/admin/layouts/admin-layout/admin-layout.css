@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  --color-background-secondary: #f6f6f7;
+  --color-background-tertiary: #ececee;
+  --color-secondary: #e9e9ec;
+  --color-secondary-light: #f3f3f5;
+  --color-border: #e2e2e6;
+  --color-border-light: #f0f0f2;
+  --color-text-primary: #302d2c;
+  --color-text-secondary: #696567;
+  --color-text-muted: #777376;
+  --color-input-background: #ffffff;
+  --color-input-border: #dedde1;
+  --color-input-disabled: #f3f3f5;
+  color: var(--color-text-primary);
+}

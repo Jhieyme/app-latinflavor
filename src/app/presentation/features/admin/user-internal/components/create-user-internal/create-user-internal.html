@@ -1,67 +1,195 @@
-<dialog #dialog aria-labelledby="create-user-title" (cancel)="cancel($event)">
-  <header>
-    <h2 id="create-user-title">Crear usuario</h2>
+<dialog
+  class="m-auto w-[min(680px,calc(100%_-_2rem))] max-h-[calc(100dvh_-_2rem)] p-0 border border-transparent rounded-[1.25rem] bg-white text-[var(--color-text-primary)] shadow-[0_24px_80px_color-mix(in_srgb,var(--color-primary-dark)_14%,transparent)] backdrop:bg-slate-900/40 backdrop:backdrop-blur-[3px]"
+  #dialog
+  aria-labelledby="create-user-title"
+  (cancel)="cancel($event)"
+>
+  <header
+    class="p-6 border-b border-[var(--color-border)] [&_p]:mt-2 [&_p]:text-[var(--color-text-secondary)] [&_p]:text-[.85rem]"
+  >
+    <h2 class="text-[1.4rem] font-semibold" id="create-user-title">Crear usuario</h2>
     <p>Registra un miembro del personal interno. Todos los campos son obligatorios.</p>
   </header>
-  <form #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="saving()">
-    <div class="fields">
-      <div><label for="create-username">Usuario</label><app-input inputId="create-username" name="username"
-          [(ngModel)]="username" required [disabled]="saving()" autocomplete="off" pattern=".*\S.*" /></div>
-      <div><label for="create-password">Contrase&#241;a</label><app-input inputId="create-password" name="password"
-          [(ngModel)]="password" required [disabled]="saving()" type="password" autocomplete="new-password" /></div>
+  <form class="p-6" #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="saving()">
+    <div class="grid grid-cols-2 gap-4 max-[540px]:grid-cols-1">
       <div>
-        <label for="create-firstName">Nombres</label>
-        <app-input inputId="create-firstName" name="firstName" [(ngModel)]="firstName" required [disabled]="saving()"
-          autocomplete="given-name" pattern=".*\S.*" />
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-username"
+          >Usuario</label
+        ><app-input
+          inputId="create-username"
+          name="username"
+          [(ngModel)]="username"
+          required
+          [disabled]="saving()"
+          autocomplete="off"
+          pattern=".*\S.*"
+        />
       </div>
-      <div><label for="create-paternalLastName">Apellido paterno</label><app-input inputId="create-paternalLastName"
-          name="paternalLastName" [(ngModel)]="paternalLastName" required [disabled]="saving()" pattern=".*\S.*" />
-      </div>
-      <div><label for="create-maternalLastName">Apellido materno</label><app-input inputId="create-maternalLastName"
-          name="maternalLastName" [(ngModel)]="maternalLastName" required [disabled]="saving()" pattern=".*\S.*" />
-      </div>
-      <div><label for="create-email">Correo electr&#243;nico</label><app-input inputId="create-email" name="email"
-          [(ngModel)]="email" required [disabled]="saving()" type="email" email autocomplete="email" /></div>
-      <div><label for="create-phoneNumber">Celular</label><app-input inputId="create-phoneNumber" name="phoneNumber"
-          [(ngModel)]="phoneNumber" required [disabled]="saving()" type="tel" inputmode="numeric" pattern="9[0-9]{8}"
-          maxlength="9" /></div>
       <div>
-        <label for="create-dni">DNI</label>
-        <app-input inputId="create-dni" name="dni" [(ngModel)]="dni" required [disabled]="saving()" inputmode="numeric"
-          pattern="[0-9]{8}" maxlength="8" />
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-password"
+          >Contrase&#241;a</label
+        ><app-input
+          inputId="create-password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          [disabled]="saving()"
+          type="password"
+          autocomplete="new-password"
+        />
       </div>
-      <div class="wide">
-        <label for="create-role">Rol</label>
-        <select id="create-role" name="role" class="app-input select-control" [(ngModel)]="role" required
-          [disabled]="saving()">
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-firstName"
+          >Nombres</label
+        >
+        <app-input
+          inputId="create-firstName"
+          name="firstName"
+          [(ngModel)]="firstName"
+          required
+          [disabled]="saving()"
+          autocomplete="given-name"
+          pattern=".*\S.*"
+        />
+      </div>
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-paternalLastName"
+          >Apellido paterno</label
+        ><app-input
+          inputId="create-paternalLastName"
+          name="paternalLastName"
+          [(ngModel)]="paternalLastName"
+          required
+          [disabled]="saving()"
+          pattern=".*\S.*"
+        />
+      </div>
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-maternalLastName"
+          >Apellido materno</label
+        ><app-input
+          inputId="create-maternalLastName"
+          name="maternalLastName"
+          [(ngModel)]="maternalLastName"
+          required
+          [disabled]="saving()"
+          pattern=".*\S.*"
+        />
+      </div>
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-email"
+          >Correo electr&#243;nico</label
+        ><app-input
+          inputId="create-email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          [disabled]="saving()"
+          type="email"
+          email
+          autocomplete="email"
+        />
+      </div>
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-phoneNumber"
+          >Celular</label
+        ><app-input
+          inputId="create-phoneNumber"
+          name="phoneNumber"
+          [(ngModel)]="phoneNumber"
+          required
+          [disabled]="saving()"
+          type="tel"
+          inputmode="numeric"
+          pattern="9[0-9]{8}"
+          maxlength="9"
+        />
+      </div>
+      <div>
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-dni">DNI</label>
+        <app-input
+          inputId="create-dni"
+          name="dni"
+          [(ngModel)]="dni"
+          required
+          [disabled]="saving()"
+          inputmode="numeric"
+          pattern="[0-9]{8}"
+          maxlength="8"
+        />
+      </div>
+      <div class="col-span-full">
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" for="create-role">Rol</label>
+        <select
+          id="create-role"
+          name="role"
+          class="app-input select-control"
+          [(ngModel)]="role"
+          required
+          [disabled]="saving()"
+        >
           <option value="INTERNAL">INTERNAL</option>
           <option value="ADMIN">ADMIN</option>
         </select>
       </div>
-      <div class="wide">
-        <label id="permissions-label">Permisos</label>
+      <div class="col-span-full">
+        <label class="block mb-[.4rem] text-[.85rem] font-medium" id="permissions-label"
+          >Permisos</label
+        >
         <details class="permissions-dropdown">
-          <summary class="app-input select-control" aria-labelledby="permissions-label permissions-value"
-            [attr.aria-disabled]="saving()" (click)="onPermissionsClick($event)">
-            <span id="permissions-value">{{ selectedPermissions.length === 1 ? selectedPermissions[0] :
-              selectedPermissions.length ? selectedPermissions.length + ' permisos seleccionados' : 'Selecciona
-              permisos' }}</span>
+          <summary
+            class="app-input select-control list-none cursor-pointer [&::-webkit-details-marker]:hidden [&_span]:block [&_span]:truncate aria-disabled:bg-[var(--color-input-disabled)] aria-disabled:cursor-not-allowed"
+            aria-labelledby="permissions-label permissions-value"
+            [attr.aria-disabled]="saving()"
+            (click)="onPermissionsClick($event)"
+          >
+            <span id="permissions-value">{{
+              selectedPermissions.length === 1
+                ? selectedPermissions[0]
+                : selectedPermissions.length
+                  ? selectedPermissions.length + ' permisos seleccionados'
+                  : 'Selecciona
+              permisos'
+            }}</span>
           </summary>
-          <div class="permissions-options" role="group" aria-labelledby="permissions-label">
+          <div
+            class="max-h-[220px] overflow-y-auto mt-[.4rem] p-[.4rem] border border-[var(--color-border)] rounded-xl bg-white shadow-[0_5px_18px_color-mix(in_srgb,var(--color-primary-dark)_6%,transparent)]"
+            role="group"
+            aria-labelledby="permissions-label"
+          >
             @for (permission of permissionOptions; track permission) {
-            <label class="permission-option">
-              <input type="checkbox" [checked]="selectedPermissions.includes(permission)"
-                (change)="togglePermission(permission)" [disabled]="saving()" />
-              <span>{{ permission }}</span>
-            </label>
+              <label
+                class="flex items-center gap-[.6rem] min-h-11 m-0 p-2 rounded-[.4rem] cursor-pointer text-[.8rem] font-medium [overflow-wrap:anywhere] hover:bg-[var(--color-secondary-light)] [&_input]:accent-[var(--color-primary)] [&_input]:shrink-0"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="selectedPermissions.includes(permission)"
+                  (change)="togglePermission(permission)"
+                  [disabled]="saving()"
+                />
+                <span>{{ permission }}</span>
+              </label>
             }
           </div>
         </details>
       </div>
     </div>
-    <p class="error" role="alert">{{ error() }}</p>
-    <footer><button type="button" (click)="cancel()" [disabled]="saving()">Cancelar</button><button type="submit"
-        class="primary" [disabled]="saving() || !allowed()">{{ saving() ? 'Guardando...' : 'Crear usuario' }}</button>
+    <p class="text-[var(--color-error)] min-h-6 mt-4 text-[.85rem]" role="alert">{{ error() }}</p>
+    <footer class="flex justify-end mt-4 gap-3 max-[540px]:[&_button]:flex-1">
+      <button
+        class="min-h-11 py-[.6rem] px-[1.1rem] border border-[var(--color-border)] rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        type="button"
+        (click)="cancel()"
+        [disabled]="saving()"
+      >
+        Cancelar</button
+      ><button
+        type="submit"
+        class="bg-[var(--color-primary)] text-white min-h-11 py-[.6rem] px-[1.1rem] border border-[var(--color-border)] rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="saving() || !allowed()"
+      >
+        {{ saving() ? 'Guardando...' : 'Crear usuario' }}
+      </button>
     </footer>
   </form>
 </dialog>

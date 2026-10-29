@@ -1,0 +1,190 @@
+<dialog
+  #dialog
+  (cancel)="close($event)"
+  aria-labelledby="floor-dialog-title"
+  class="m-auto w-[min(600px,calc(100%_-_2rem))] max-h-[calc(100dvh_-_2rem)] rounded-2xl border-0 bg-white p-0 text-[var(--color-text-primary)] shadow-xl backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
+>
+  <header class="flex items-center justify-between gap-4 border-b border-[var(--color-border)] p-6">
+    <h2 id="floor-dialog-title" class="text-xl font-semibold">{{ title() }}</h2>
+    <button
+      type="button"
+      (click)="close()"
+      [disabled]="saving()"
+      aria-label="Cerrar modal"
+      class="grid size-11 shrink-0 cursor-pointer place-items-center rounded-xl hover:bg-[var(--color-secondary-light)] disabled:opacity-50"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+  </header>
+  <div class="p-6" [attr.aria-busy]="loading() || saving()">
+    @if (loading()) {
+      <p role="status" class="py-8 text-center text-[var(--color-text-secondary)]">
+        Cargando datos...
+      </p>
+    } @else if (failed()) {
+      <p class="text-sm text-[var(--color-text-secondary)]">No se pudieron cargar los datos.</p>
+      <button class="secondary-button mt-4" type="button" (click)="load()">Reintentar</button>
+    } @else {
+      <form #form="ngForm" (ngSubmit)="submit(form)">
+        @if (mode() === 'status') {
+          <p class="text-sm leading-6">
+            ¿Deseas {{ record()?.active ? 'deshabilitar' : 'habilitar' }}
+            {{ kind() === 'zones' ? 'la zona ' + name : 'la mesa ' + tableNumber }}?
+          </p>
+          <p class="mt-2 text-sm text-[var(--color-text-secondary)]">
+            Podrás cambiar su estado nuevamente desde el listado.
+          </p>
+        } @else if (mode() === 'detail') {
+          <dl class="grid grid-cols-2 gap-5 text-sm max-[480px]:grid-cols-1">
+            @if (kind() === 'zones') {
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Código</dt>
+                <dd class="mt-1 font-medium break-words">{{ code }}</dd>
+              </div>
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Nombre</dt>
+                <dd class="mt-1 font-medium break-words">{{ name }}</dd>
+              </div>
+              <div class="col-span-full">
+                <dt class="text-[var(--color-text-secondary)]">Descripción</dt>
+                <dd class="mt-1 break-words">{{ description || 'Sin descripción' }}</dd>
+              </div>
+            } @else {
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Código</dt>
+                <dd class="mt-1 font-medium">{{ code }}</dd>
+              </div>
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Zona</dt>
+                <dd class="mt-1 font-medium">{{ zoneName() }}</dd>
+              </div>
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Número de mesa</dt>
+                <dd class="mt-1 font-medium">{{ tableNumber }}</dd>
+              </div>
+              <div>
+                <dt class="text-[var(--color-text-secondary)]">Capacidad</dt>
+                <dd class="mt-1 font-medium">{{ capacity }} personas</dd>
+              </div>
+            }
+            <div>
+              <dt class="text-[var(--color-text-secondary)]">Estado</dt>
+              <dd class="mt-1 font-medium">{{ record()?.active ? 'Activa' : 'Inactiva' }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <div class="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
+            @if (kind() === 'zones') {
+              <label class="text-sm"
+                >Código<input
+                  class="app-input mt-2"
+                  name="code"
+                  [(ngModel)]="code"
+                  required
+                  pattern=".*\S.*"
+                  maxlength="20"
+                  [disabled]="saving()"
+              /></label>
+              <label class="text-sm"
+                >Nombre<input
+                  class="app-input mt-2"
+                  name="name"
+                  [(ngModel)]="name"
+                  required
+                  pattern=".*\S.*"
+                  maxlength="100"
+                  [disabled]="saving()"
+              /></label>
+              <label class="col-span-full text-sm"
+                >Descripción <span class="text-[var(--color-text-muted)]">(opcional)</span
+                ><textarea
+                  class="app-input mt-2 min-h-24 resize-y"
+                  name="description"
+                  [(ngModel)]="description"
+                  maxlength="255"
+                  [disabled]="saving()"
+                ></textarea>
+              </label>
+            } @else {
+              <label class="col-span-full text-sm"
+                >Zona
+                <select
+                  class="app-input select-control mt-2"
+                  name="zoneId"
+                  [(ngModel)]="zoneId"
+                  required
+                  [disabled]="saving()"
+                >
+                  <option value="" disabled>Selecciona una zona</option>
+                  @for (zone of zones(); track zone.id) {
+                    <option [value]="zone.id" [disabled]="!zone.active">
+                      {{ zone.name }} ({{ zone.code }}){{ zone.active ? '' : ' · Inactiva' }}
+                    </option>
+                  }
+                </select>
+              </label>
+              @if (!zones().length) {
+                <p class="col-span-full text-sm text-[var(--color-text-secondary)]">
+                  Primero crea una zona para asignarle mesas.
+                </p>
+              }
+              <label class="text-sm"
+                >Número de mesa<input
+                  class="app-input mt-2"
+                  type="number"
+                  name="tableNumber"
+                  [(ngModel)]="tableNumber"
+                  required
+                  min="1"
+                  max="2147483647"
+                  step="1"
+                  [disabled]="saving()"
+              /></label>
+              <label class="text-sm"
+                >Capacidad<select
+                  class="app-input select-control mt-2"
+                  name="capacity"
+                  [(ngModel)]="capacity"
+                  required
+                  [disabled]="saving()"
+                >
+                  @for (value of [1, 2, 3, 4, 5, 6]; track value) {
+                    <option [ngValue]="value">
+                      {{ value }} {{ value === 1 ? 'persona' : 'personas' }}
+                    </option>
+                  }
+                </select></label
+              >
+            }
+          </div>
+        }
+        @if (mode() !== 'detail') {
+          <footer class="mt-6 flex justify-end">
+            <button type="submit" class="primary-button" [disabled]="saving()">
+              {{
+                saving()
+                  ? 'Guardando...'
+                  : mode() === 'status'
+                    ? record()?.active
+                      ? 'Deshabilitar'
+                      : 'Habilitar'
+                    : 'Guardar'
+              }}
+            </button>
+          </footer>
+        }
+      </form>
+    }
+  </div>
+</dialog>

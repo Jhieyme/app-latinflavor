@@ -1,3 +1,4 @@
+import { businessInterceptor } from './data/interceptors/business.interceptor';
 import { customerInterceptor, CUSTOMER_ACCESS_TOKEN, EXPIRE_CUSTOMER_SESSION } from './data/interceptors/customer.interceptor';
 import { UserSessionStore } from './presentation/features/user/login-otp/services/store/user-session.store';
 import { identityErrorInterceptor, EXPIRE_ADMIN_SESSION } from './data/interceptors/identity-error.interceptor';
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       useFactory: (store: AdminSessionStore) => () => store.expire(),
       deps: [AdminSessionStore],
     },
-    provideHttpClient(withInterceptors([identityErrorInterceptor, userInternalInterceptor, customerInterceptor])),
+    provideHttpClient(withInterceptors([identityErrorInterceptor, userInternalInterceptor, customerInterceptor, businessInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes)

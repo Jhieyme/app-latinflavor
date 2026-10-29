@@ -1,72 +1,202 @@
-<p class="scroll-hint">Desliza la tabla horizontalmente para ver todas las columnas.</p>
-<div class="table-scroll" tabindex="0" role="region" aria-label="Tabla de personal interno">
-  <table class="w-full text-sm">
-    <caption class="sr-only">Usuarios internos, datos de contacto, estado y acciones</caption>
-    <thead class="border-b border-border bg-cream">
+<p class="hidden max-[1100px]:block py-[.6rem] px-4 text-[var(--color-text-secondary)] text-xs">
+  Desliza la tabla horizontalmente para ver todas las columnas.
+</p>
+<div
+  class="isolate overflow-x-auto max-w-full overscroll-x-contain focus-visible:outline-offset-[-3px]"
+  tabindex="0"
+  role="region"
+  aria-label="Tabla de personal interno"
+>
+  <table class="w-full min-w-[1100px] text-left text-sm">
+    <caption class="sr-only">
+      Usuarios internos, datos de contacto, estado y acciones
+    </caption>
+    <thead
+      class="bg-[var(--color-background-secondary)] [&_th]:text-xs [&_th]:font-medium [&_th]:text-[var(--color-text-secondary)]"
+    >
       <tr>
-        <th scope="col">Usuario</th>
-        <th scope="col">Nombre completo</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Celular</th>
-        <th scope="col">DNI</th>
-        <th scope="col">Código de empleado</th>
-        <th scope="col">Estado</th>
-        <th scope="col" class="actions-column">Acciones</th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Usuario
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Nombre completo
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Correo
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Celular
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          DNI
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Código de empleado
+        </th>
+        <th
+          class="px-5 py-3 text-left align-middle whitespace-nowrap max-[1100px]:px-4"
+          scope="col"
+        >
+          Estado
+        </th>
+        <th
+          scope="col"
+          class="actions-column sticky right-0 z-[1] bg-white shadow-[-1px_0_0_var(--color-border)] max-[700px]:px-2 px-5 py-3 text-right align-middle whitespace-nowrap max-[1100px]:px-4"
+        >
+          Acciones
+        </th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-border">
+    <tbody
+      class="divide-y divide-[var(--color-border-light)] [&_th]:font-medium"
+    >
       @for (user of users(); track user.id) {
-      <tr class="hover:bg-cream/60">
-        <th scope="row">
-          <div class="person"><span class="avatar" aria-hidden="true">{{ (user.firstName || user.username ||
-              '').slice(0, 1).toUpperCase() || '—' }}</span>
-            <span class="person-name">{{ user.username || 'Sin usuario' }}</span>
-          </div>
-        </th>
-        <td>{{ fullName(user) }}</td>
-        <td>{{ user.email || 'Sin correo' }}</td>
-        <td class="identifier whitespace-nowrap">{{ user.phoneNumber || 'Sin celular' }}</td>
-        <td class="identifier whitespace-nowrap">{{ user.dni || 'Sin DNI' }}</td>
-        <td class="identifier">{{ user.employeeCode || 'Sin datos' }}</td>
-        <td><span class="status-badge" [class.is-active]="user.active">{{ user.active ? 'Activo' : 'Inactivo'
-            }}</span></td>
-        <td class="actions-column">
-          <div class="row-actions">
-            <button type="button" class="action-button" title="Detalle" (click)="detailUser.emit(user)"
-              aria-haspopup="dialog" [attr.aria-label]="'Ver detalle de ' + (user.username || fullName(user))">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            </button>
-            <button type="button" class="action-button" title="Modificar usuario"
-              [disabled]="!canEdit()" (click)="editUser.emit(user)"
-              [attr.aria-label]="'Modificar usuario ' + (user.username || fullName(user))">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15v5Z" />
-              </svg>
-            </button>
-            <button type="button" class="action-button action-disable" title="Deshabilitar usuario"
-              [disabled]="!canDisable() || !user.active" (click)="disableUser.emit(user)"
-              [attr.aria-label]="'Deshabilitar usuario ' + (user.username || fullName(user))">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <path d="m6 6 12 12" />
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
+        <tr class="transition-colors duration-150 hover:bg-[var(--color-background-secondary)]/50">
+          <th
+            class="px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4"
+            scope="row"
+          >
+            <div class="flex items-center gap-[.7rem] min-w-[220px] max-[1100px]:min-w-40">
+              <span
+                class="avatar grid place-items-center flex-[0_0_36px] h-9 rounded-full bg-[#eee5e1] text-[#594038] text-[.8rem] font-semibold"
+                aria-hidden="true"
+                >{{
+                  (user.firstName || user.username || '').slice(0, 1).toUpperCase() || '—'
+                }}</span
+              >
+              <span class="block font-medium">{{ user.username || 'Sin usuario' }}</span>
+            </div>
+          </th>
+          <td class="px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4">
+            {{ fullName(user) }}
+          </td>
+          <td class="px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4">
+            {{ user.email || 'Sin correo' }}
+          </td>
+          <td
+            class="tabular-nums whitespace-nowrap px-5 py-4 text-left align-middle max-[1100px]:p-4"
+          >
+            {{ user.phoneNumber || 'Sin celular' }}
+          </td>
+          <td
+            class="tabular-nums whitespace-nowrap px-5 py-4 text-left align-middle max-[1100px]:p-4"
+          >
+            {{ user.dni || 'Sin DNI' }}
+          </td>
+          <td
+            class="tabular-nums px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4"
+          >
+            {{ user.employeeCode || 'Sin datos' }}
+          </td>
+          <td class="px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4">
+            <span
+              class="status-badge inline-flex items-center gap-[.4rem] py-[.35rem] px-[.65rem] rounded-[2rem] bg-[var(--color-secondary-light)] text-[var(--color-text-secondary)] text-[.7rem] whitespace-nowrap before:content-[''] before:size-[5px] before:rounded-full before:bg-current"
+              [class.is-active]="user.active"
+              >{{ user.active ? 'Activo' : 'Inactivo' }}</span
+            >
+          </td>
+          <td
+            class="actions-column sticky right-0 z-[1] bg-white shadow-[-1px_0_0_var(--color-border)] max-[700px]:px-2 px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4"
+          >
+            <div class="flex justify-end gap-1">
+              <button
+                type="button"
+                class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-[var(--color-text-secondary)] transition-colors duration-150 hover:bg-[var(--color-secondary-light)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed"
+                title="Detalle"
+                (click)="detailUser.emit(user)"
+                aria-haspopup="dialog"
+                [attr.aria-label]="'Ver detalle de ' + (user.username || fullName(user))"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-[var(--color-text-secondary)] transition-colors duration-150 hover:bg-[var(--color-secondary-light)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed"
+                title="Modificar usuario"
+                [disabled]="!canEdit()"
+                (click)="editUser.emit(user)"
+                [attr.aria-label]="'Modificar usuario ' + (user.username || fullName(user))"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15v5Z" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg text-[var(--color-text-secondary)] transition-colors duration-150 hover:bg-[var(--color-secondary-light)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed !text-[var(--color-error)] hover:!bg-[color-mix(in_srgb,var(--color-error)_7%,white)]"
+                title="Deshabilitar usuario"
+                [disabled]="!canDisable() || !user.active"
+                (click)="disableUser.emit(user)"
+                [attr.aria-label]="'Deshabilitar usuario ' + (user.username || fullName(user))"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
       } @empty {
-      <tr>
-        <td colspan="8" class="no-results"><strong>Sin coincidencias</strong>
-          <p>Prueba con otra b&#250;squeda o cambia el filtro.</p><button type="button"
-            (click)="clearFilters.emit()">Limpiar filtros</button>
-        </td>
-      </tr>
+        <tr>
+          <td
+            colspan="8"
+            class="!whitespace-normal !text-center !px-4 !py-12 [&_p]:mt-2 [&_p]:text-[var(--color-text-secondary)] [&_button]:min-h-11 [&_button]:cursor-pointer [&_button]:mt-4 [&_button]:py-2 [&_button]:px-4 [&_button]:border [&_button]:border-[var(--color-border)] [&_button]:rounded-[.7rem] px-5 py-4 text-left align-middle whitespace-nowrap max-[1100px]:p-4"
+          >
+            <strong>Sin coincidencias</strong>
+            <p>Prueba con otra b&#250;squeda o cambia el filtro.</p>
+            <button type="button" (click)="clearFilters.emit()">Limpiar filtros</button>
+          </td>
+        </tr>
       }
     </tbody>
   </table>

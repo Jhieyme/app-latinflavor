@@ -1,9 +1,38 @@
-<dialog #dialog aria-labelledby="disable-title" aria-describedby="disable-description" (cancel)="cancel($event)">
-  <h2 id="disable-title">Deshabilitar usuario</h2>
-  <p id="disable-description">&#191;Deseas deshabilitar a <strong>{{ user().username || user().email || user().id }}</strong>? Su estado pasar&#225; a inactivo.</p>
-  <p class="error" role="alert">{{ error() }}</p>
-  <footer [attr.aria-busy]="saving()">
-    <button type="button" (click)="cancel()" [disabled]="saving()" autofocus>Cancelar</button>
-    <button type="button" class="danger" (click)="confirm()" [disabled]="saving() || !allowed()">{{ saving() ? 'Deshabilitando...' : 'Deshabilitar' }}</button>
+<dialog
+  class="m-auto w-[min(460px,calc(100%_-_2rem))] max-h-[calc(100dvh_-_2rem)] p-6 border border-[var(--color-border)] rounded-[1.25rem] bg-white text-[var(--color-text-primary)] shadow-[0_24px_80px_color-mix(in_srgb,var(--color-primary-dark)_14%,transparent)] backdrop:bg-slate-900/40 backdrop:backdrop-blur-[3px]"
+  #dialog
+  aria-labelledby="disable-title"
+  aria-describedby="disable-description"
+  (cancel)="cancel($event)"
+>
+  <h2 class="text-[1.3rem] font-semibold" id="disable-title">Deshabilitar usuario</h2>
+  <p class="mt-4 text-[.9rem] leading-[1.6] [overflow-wrap:anywhere]" id="disable-description">
+    &#191;Deseas deshabilitar a <strong>{{ user().username || user().email || user().id }}</strong
+    >? Su estado pasar&#225; a inactivo.
+  </p>
+  <p
+    class="text-[var(--color-error)] mt-4 text-[.9rem] leading-[1.6] [overflow-wrap:anywhere]"
+    role="alert"
+  >
+    {{ error() }}
+  </p>
+  <footer class="flex justify-end flex-wrap gap-3 mt-6" [attr.aria-busy]="saving()">
+    <button
+      class="min-h-11 py-[.6rem] px-4 border border-[var(--color-border)] rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      type="button"
+      (click)="cancel()"
+      [disabled]="saving()"
+      autofocus
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="bg-[var(--color-error)] text-white !border-[var(--color-error)] min-h-11 py-[.6rem] px-4 border border-[var(--color-border)] rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      (click)="confirm()"
+      [disabled]="saving() || !allowed()"
+    >
+      {{ saving() ? 'Deshabilitando...' : 'Deshabilitar' }}
+    </button>
   </footer>
 </dialog>

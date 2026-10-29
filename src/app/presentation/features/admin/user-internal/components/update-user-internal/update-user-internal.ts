@@ -25,8 +25,8 @@ export class UpdateUserInternalDialog implements OnInit, AfterViewInit {
   readonly canUpdate = computed(() => this.store.canManageUser('update'));
   readonly canAccess = computed(() => this.store.canManageUser('access'));
   readonly saving = signal<'info' | 'access' | null>(null);
+  readonly activeTab = signal<'info' | 'access'>('info');
   readonly error = signal('');
-  readonly success = signal('');
   readonly permissionOptions = signal<string[]>(Object.values(PERMISSIONS));
   firstName = ''; paternalLastName = ''; maternalLastName = ''; phoneNumber = ''; dni = '';
   active = false;
@@ -52,6 +52,20 @@ export class UpdateUserInternalDialog implements OnInit, AfterViewInit {
     this.permissionOptions.set([...new Set([...Object.values(PERMISSIONS), ...user.permissions])]);
   }
   ngAfterViewInit(): void { this.dialog.nativeElement.showModal(); }
+  selectTab(tab: 'info' | 'access'): void {
+    if (this.saving() || this.activeTab() === tab) return;
+    this.activeTab.set(tab);
+    this.error.set('');
+  }
+  onTabKeydown(event: KeyboardEvent): void {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    if (this.saving()) return;
+    const tab = event.key === 'Home' ? 'info' : event.key === 'End' ? 'access'
+      : this.activeTab() === 'info' ? 'access' : 'info';
+    this.selectTab(tab);
+    this.dialog.nativeElement.querySelector<HTMLButtonElement>(`#edit-tab-${tab}`)?.focus();
+  }
   cancel(event?: Event): void {
     event?.preventDefault();
     if (this.saving()) return;
@@ -82,11 +96,11 @@ export class UpdateUserInternalDialog implements OnInit, AfterViewInit {
     }), 'access');
   }
   private send(request: Observable<void>, section: 'info' | 'access'): void {
-    this.error.set(''); this.success.set(''); this.saving.set(section);
+    this.error.set(''); this.saving.set(section);
     request.pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.saving.set(null))).subscribe({
       next: () => {
         const message = section === 'info' ? 'Datos personales actualizados.' : 'Rol y permisos actualizados.';
-        this.success.set(message); this.toast.show(message); this.saved.emit();
+        this.toast.show(message); this.saved.emit();
       },
       error: (error: unknown) => { this.toast.showError(error); },
     });

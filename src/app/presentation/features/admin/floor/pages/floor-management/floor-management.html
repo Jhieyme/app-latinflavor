@@ -1,0 +1,369 @@
+<section class="mx-auto w-full max-w-[1440px] px-6 pb-6 pt-5 max-[700px]:px-4">
+  <header class="mb-5 flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight">{{ title }}</h1>
+      <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
+        {{
+          kind === 'zones'
+            ? 'Organiza los espacios de tu
+        restaurante.'
+            : 'Administra las mesas y su capacidad.'
+        }}
+      </p>
+    </div>
+    <button
+      type="button"
+      class="primary-button flex items-center gap-2"
+      (click)="dialog.set({ mode: 'edit' })"
+    >
+      <span aria-hidden="true" class="text-xl leading-none">+</span
+      >{{ kind === 'zones' ? 'Nueva zona' : 'Nueva mesa' }}
+    </button>
+  </header>
+  <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white">
+    <div class="flex flex-wrap items-end gap-3 border-b border-[var(--color-border)] p-4">
+      <div class="flex min-w-40 flex-1 items-end gap-2">
+        <label class="min-w-0 flex-1 text-xs font-medium text-[var(--color-text-secondary)]"
+          >Buscar
+          @if (filter === 'isActive') {
+            <select
+              class="app-input select-control mt-2"
+              [(ngModel)]="query"
+              (ngModelChange)="load(0)"
+            >
+              <option value="">Todos los estados</option>
+              <option value="true">Activas</option>
+              <option value="false">Inactivas</option>
+            </select>
+          } @else {
+            <input
+              class="app-input mt-2"
+              type="search"
+              [(ngModel)]="query"
+              (ngModelChange)="searchChanged()"
+              placeholder="Escribe para buscar..."
+            />
+          }
+        </label>
+        <button
+          type="button"
+          (click)="load()"
+          [disabled]="loading()"
+          class="grid place-items-center size-12 shrink-0 border-0 bg-transparent rounded-xl cursor-pointer text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-wait [&_svg]:block [&_svg]:size-5 [&_svg]:aspect-square [&_svg]:overflow-visible"
+          aria-label="Actualizar registros"
+          title="Actualizar registros"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M3 12a9 9 0 0 1 15.36-6.36L21 8" />
+            <path d="M21 3v5h-5" />
+            <path d="M21 12a9 9 0 0 1-15.36 6.36L3 16" />
+            <path d="M8 16H3v5" />
+          </svg>
+        </button>
+      </div>
+      <label class="text-xs font-medium text-[var(--color-text-secondary)]"
+        >Campo<select
+          class="app-input select-control mt-2"
+          [(ngModel)]="filter"
+          (ngModelChange)="filterChanged()"
+        >
+          @if (kind === 'zones') {
+            <option value="name">Nombre</option>
+            <option value="code">Código</option>
+            <option value="description">Descripción</option>
+          } @else {
+            <option value="tableCode">Código</option>
+            <option value="tableNumber">Número</option>
+            <option value="capacity">Capacidad</option>
+          }
+          <option value="isActive">Estado</option>
+        </select></label
+      >
+      <label class="text-xs font-medium text-[var(--color-text-secondary)]"
+        >Ordenar por<select
+          class="app-input select-control mt-2"
+          [(ngModel)]="sort"
+          (ngModelChange)="load(0)"
+        >
+          @if (kind === 'zones') {
+            <option value="name">Nombre</option>
+            <option value="code">Código</option>
+          } @else {
+            <option value="tableNumber">Número</option>
+            <option value="tableCode">Código</option>
+            <option value="capacity">Capacidad</option>
+          }
+          <option value="isActive">Estado</option>
+        </select></label
+      >
+      <label class="text-xs font-medium text-[var(--color-text-secondary)]"
+        >Dirección<select
+          class="app-input select-control mt-2"
+          [(ngModel)]="direction"
+          (ngModelChange)="load(0)"
+        >
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select></label
+      >
+    </div>
+    @if (kind === 'tables') {
+      <div
+        class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--color-border)] px-4 py-3"
+      >
+        <div
+          class="flex flex-wrap items-center gap-2"
+          role="group"
+          aria-label="Filtrar mesas por estado"
+        >
+          <button
+            type="button"
+            (click)="selectStatus('')"
+            [attr.aria-pressed]="filter !== 'isActive' || !query"
+            class="min-h-9 cursor-pointer rounded-lg px-3 text-xs font-medium text-[var(--color-text-secondary)] aria-pressed:bg-[var(--color-primary)] aria-pressed:text-white hover:bg-[var(--color-secondary-light)]"
+          >
+            Todas
+          </button>
+          <button
+            type="button"
+            (click)="selectStatus('true')"
+            [attr.aria-pressed]="filter === 'isActive' && query === 'true'"
+            class="min-h-9 cursor-pointer rounded-lg px-3 text-xs font-medium text-[var(--color-text-secondary)] aria-pressed:bg-[var(--color-primary)] aria-pressed:text-white hover:bg-[var(--color-secondary-light)]"
+          >
+            Activas
+          </button>
+          <button
+            type="button"
+            (click)="selectStatus('false')"
+            [attr.aria-pressed]="filter === 'isActive' && query === 'false'"
+            class="min-h-9 cursor-pointer rounded-lg px-3 text-xs font-medium text-[var(--color-text-secondary)] aria-pressed:bg-[var(--color-primary)] aria-pressed:text-white hover:bg-[var(--color-secondary-light)]"
+          >
+            Inactivas
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-1 rounded-xl bg-[var(--color-background-secondary)] p-1"
+          role="group"
+          aria-label="Vista de mesas"
+        >
+          <button
+            type="button"
+            (click)="tableView.set('cards')"
+            [attr.aria-pressed]="tableView() === 'cards'"
+            class="flex min-h-9 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs text-[var(--color-text-secondary)] aria-pressed:bg-white aria-pressed:text-[var(--color-primary)] aria-pressed:shadow-sm"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" /></svg
+            >Tarjetas
+          </button>
+          <button
+            type="button"
+            (click)="tableView.set('list')"
+            [attr.aria-pressed]="tableView() === 'list'"
+            class="flex min-h-9 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs text-[var(--color-text-secondary)] aria-pressed:bg-white aria-pressed:text-[var(--color-primary)] aria-pressed:shadow-sm"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1" /></svg
+            >Lista
+          </button>
+        </div>
+      </div>
+    }
+    <div [attr.aria-busy]="loading()">
+      @if (loading()) {
+        <p class="p-12 text-center text-sm text-[var(--color-text-secondary)]" role="status">
+          Cargando {{ title.toLowerCase() }}...
+        </p>
+      } @else if (failed()) {
+        <div class="p-12 text-center">
+          <p class="mb-4 text-sm text-[var(--color-text-secondary)]">
+            No se pudo cargar el listado.
+          </p>
+          <button type="button" class="secondary-button" (click)="load()">Reintentar</button>
+        </div>
+      } @else if (!rows().length) {
+        <div class="p-12 text-center">
+          <p class="font-medium">No hay resultados</p>
+          <p class="mt-2 text-sm text-[var(--color-text-secondary)]">
+            Prueba otra búsqueda o crea
+            {{ kind === 'zones' ? 'una nueva zona' : 'una nueva mesa' }}.
+          </p>
+        </div>
+      } @else if (kind === 'tables' && tableView() === 'cards') {
+        <app-dining-table-cards [tables]="tables()" (selected)="dialog.set($event)" />
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead
+              class="bg-[var(--color-background-secondary)] text-xs text-[var(--color-text-secondary)]"
+            >
+              <tr>
+                <th class="px-5 py-3 font-medium">Código</th>
+                <th class="px-5 py-3 font-medium">{{ kind === 'zones' ? 'Nombre' : 'Mesa' }}</th>
+                <th class="px-5 py-3 font-medium">
+                  {{ kind === 'zones' ? 'Descripción' : 'Capacidad' }}
+                </th>
+                <th class="px-5 py-3 font-medium">Estado</th>
+                <th class="px-5 py-3 text-right font-medium">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--color-border-light)]">
+              @for (row of rows(); track row.id) {
+                <tr class="hover:bg-[var(--color-background-secondary)]/50">
+                  <td class="px-5 py-4 font-medium whitespace-nowrap">{{ row.code }}</td>
+                  <td class="px-5 py-4">{{ row.label }}</td>
+                  <td class="max-w-80 px-5 py-4 break-words text-[var(--color-text-secondary)]">
+                    {{ row.detail }}
+                  </td>
+                  <td class="px-5 py-4">
+                    <span
+                      class="rounded-full bg-[var(--color-secondary-light)] px-2.5 py-1 text-xs"
+                      [class.active-status]="row.active"
+                      >{{ row.active ? 'Activa' : 'Inactiva' }}</span
+                    >
+                  </td>
+                  <td class="px-4 py-2">
+                    <div class="flex justify-end gap-1">
+                      <button
+                        type="button"
+                        class="icon-button"
+                        aria-label="Ver detalle"
+                        title="Detalle"
+                        (click)="dialog.set({ id: row.id, mode: 'detail' })"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                          class="size-5"
+                          aria-hidden="true"
+                        >
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="icon-button"
+                        aria-label="Editar"
+                        title="Editar"
+                        (click)="dialog.set({ id: row.id, mode: 'edit' })"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                          class="size-5"
+                          aria-hidden="true"
+                        >
+                          <path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15v5Z" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="icon-button"
+                        [style.color]="row.active ? 'var(--color-error)' : null"
+                        [attr.aria-label]="row.active ? 'Deshabilitar' : 'Habilitar'"
+                        [title]="row.active ? 'Deshabilitar' : 'Habilitar'"
+                        (click)="dialog.set({ id: row.id, mode: 'status' })"
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="12" r="9" />
+                          <path d="m6 6 12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+    <footer
+      class="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--color-border)] px-5 py-3 text-xs text-[var(--color-text-secondary)]"
+    >
+      <span role="status">{{ total() }} resultados</span>
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="flex items-center gap-2"
+          >Por página<select
+            class="app-input select-control !min-h-9 !w-auto !py-1"
+            [(ngModel)]="size"
+            (ngModelChange)="load(0)"
+          >
+            @for (value of [10, 20, 50]; track value) {
+              <option [ngValue]="value">{{ value }}</option>
+            }
+          </select></label
+        >
+        <button
+          class="secondary-button"
+          type="button"
+          [disabled]="loading() || page() === 0"
+          (click)="load(page() - 1)"
+        >
+          Anterior
+        </button>
+        <span>{{ totalPages() ? page() + 1 : 0 }} / {{ totalPages() }}</span>
+        <button
+          class="secondary-button"
+          type="button"
+          [disabled]="loading() || page() + 1 >= totalPages()"
+          (click)="load(page() + 1)"
+        >
+          Siguiente
+        </button>
+      </div>
+    </footer>
+  </div>
+</section>
+@if (dialog(); as current) {
+  <app-floor-dialog
+    [kind]="kind"
+    [recordId]="current.id"
+    [mode]="current.mode"
+    (dismissed)="dialog.set(null)"
+    (saved)="saved()"
+  />
+}

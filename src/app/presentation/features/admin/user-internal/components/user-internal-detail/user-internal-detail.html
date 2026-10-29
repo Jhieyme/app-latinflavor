@@ -1,16 +1,19 @@
 <dialog
+  class="fixed inset-y-0 right-0 left-auto m-0 w-[min(460px,100vw)] max-w-[100vw] h-dvh max-h-dvh p-0 border-0 bg-white text-[var(--color-text-primary)] shadow-[-16px_0_64px_color-mix(in_srgb,var(--color-primary-dark)_10%,transparent)] overflow-y-auto backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
   #dialog
   aria-labelledby="user-detail-title"
   (cancel)="close($event)"
   (click)="backdropClick($event)"
 >
-  <header>
+  <header class="flex items-center justify-between gap-4 p-6 max-[380px]:p-4">
     <div>
-      <h2 id="user-detail-title">Detalle del usuario</h2>
+      <h2 class="text-[1.15rem] font-semibold tracking-[-.025em]" id="user-detail-title">
+        Detalle del usuario
+      </h2>
     </div>
     <button
       type="button"
-      class="close-button"
+      class="grid place-items-center w-11 shrink-0 bg-[var(--color-secondary-light)] text-[var(--color-text-secondary)] cursor-pointer rounded-xl min-h-11 transition-colors duration-150 hover:bg-[var(--color-secondary)] focus-visible:outline-2 focus-visible:outline-[var(--color-text-secondary)] focus-visible:outline-offset-[3px]"
       aria-label="Cerrar detalle"
       (click)="close()"
       autofocus
@@ -28,41 +31,85 @@
       </svg>
     </button>
   </header>
-  <div class="content" [attr.aria-busy]="loading()">
+  <div class="px-6 pb-8 max-[380px]:px-4 max-[380px]:pb-6" [attr.aria-busy]="loading()">
     @if (loading()) {
-      <p role="status" class="message">Cargando detalle del usuario...</p>
+      <p role="status" class="py-8 text-[var(--color-text-secondary)]">Cargando detalle del usuario...</p>
     } @else if (error()) {
-      <p role="alert" class="error">{{ error() }}</p>
-      <button type="button" class="retry" (click)="load()">Reintentar</button>
+      <p role="alert" class="text-[var(--color-error)] mt-4 text-[.9rem]">{{ error() }}</p>
+      <button
+        type="button"
+        class="mt-4 py-2 px-4 bg-[var(--color-secondary-light)] text-[var(--color-text-primary)] cursor-pointer rounded-xl min-h-11 transition-colors duration-150 hover:bg-[var(--color-secondary)] focus-visible:outline-2 focus-visible:outline-[var(--color-text-secondary)] focus-visible:outline-offset-[3px]"
+        (click)="load()"
+      >
+        Reintentar
+      </button>
     } @else if (user(); as detail) {
-      <section class="identity" aria-label="Usuario">
-        <span class="avatar" aria-hidden="true">{{ (detail.firstName || detail.username).slice(0, 1).toUpperCase() }}</span>
-        <p class="person-name">{{ detail.firstName }} {{ detail.paternalLastName }} {{ detail.maternalLastName }}</p>
-        <span class="status" [class.active]="detail.active">{{
-          detail.active ? 'Activo' : 'Inactivo'
-        }}</span>
+      <section
+        class="!mt-1 grid justify-items-center gap-[.9rem] py-7 px-5 rounded-[1.25rem] bg-[linear-gradient(145deg,var(--color-background),var(--color-secondary-light))] text-center mt-8"
+        aria-label="Usuario"
+      >
+        <span
+          class="grid place-items-center size-15 rounded-[20px] bg-white text-[var(--color-text-primary)] shadow-[0_3px_12px_color-mix(in_srgb,var(--color-primary-dark)_4%,transparent)] text-2xl font-semibold"
+          aria-hidden="true"
+          >{{ (detail.firstName || detail.username).slice(0, 1).toUpperCase() }}</span
+        >
+        <p
+          class="text-[1.05rem] font-semibold tracking-[-.02em] [overflow-wrap:anywhere] max-w-full"
+        >
+          {{ detail.firstName }} {{ detail.paternalLastName }} {{ detail.maternalLastName }}
+        </p>
+        <span
+          class="status inline-flex items-center gap-[.4rem] py-[.3rem] px-[.7rem] rounded-[2rem] bg-[var(--color-border)] text-[var(--color-text-secondary)] text-[.72rem] font-medium before:content-[''] before:size-1.5 before:rounded-full before:bg-current"
+          [class.active]="detail.active"
+          >{{ detail.active ? 'Activo' : 'Inactivo' }}</span
+        >
       </section>
-      <section aria-labelledby="detail-roles-title">
-        <h3 id="detail-roles-title">
-          Roles <span class="count">{{ detail.roles.length }}</span>
+      <section class="mt-8" aria-labelledby="detail-roles-title">
+        <h3 class="flex items-center gap-2 text-[.85rem] font-semibold" id="detail-roles-title">
+          Roles
+          <span
+            class="inline-grid place-items-center min-w-[23px] h-[23px] px-[.35rem] rounded-[.45rem] bg-[var(--color-secondary-light)] text-[.7rem] text-[var(--color-text-secondary)]"
+            >{{ detail.roles.length }}</span
+          >
         </h3>
-        <ul class="badges">
+        <ul
+          class="flex flex-wrap gap-2 [&_li]:py-[.45rem] [&_li]:px-[.8rem] [&_li]:rounded-[.55rem] [&_li]:bg-[var(--color-secondary-light)] [&_li]:text-[var(--color-text-primary)] [&_li]:font-semibold [&_li]:tracking-[.025em] list-none p-0 mt-[.9rem]"
+        >
           @for (role of detail.roles; track $index) {
-            <li>{{ role }}</li>
+            <li class="min-w-0 [overflow-wrap:anywhere] text-xs leading-normal">{{ role }}</li>
           } @empty {
-            <li class="empty">Sin roles asignados</li>
+            <li
+              class="!bg-transparent !py-1 !px-0 !text-[var(--color-text-secondary)] !font-normal !tracking-normal min-w-0 [overflow-wrap:anywhere] text-xs leading-normal"
+            >
+              Sin roles asignados
+            </li>
           }
         </ul>
       </section>
-      <section aria-labelledby="detail-permissions-title">
-        <h3 id="detail-permissions-title">
-          Permisos <span class="count">{{ detail.permissions.length }}</span>
+      <section class="mt-8" aria-labelledby="detail-permissions-title">
+        <h3
+          class="flex items-center gap-2 text-[.85rem] font-semibold"
+          id="detail-permissions-title"
+        >
+          Permisos
+          <span
+            class="inline-grid place-items-center min-w-[23px] h-[23px] px-[.35rem] rounded-[.45rem] bg-[var(--color-secondary-light)] text-[.7rem] text-[var(--color-text-secondary)]"
+            >{{ detail.permissions.length }}</span
+          >
         </h3>
-        <ul class="permissions">
+        <ul
+          class="permissions grid gap-2 [&_li]:flex [&_li]:items-center [&_li]:gap-3 [&_li]:py-[.85rem] [&_li]:px-4 [&_li]:bg-[var(--color-background)] [&_li]:rounded-xl [&_li]:text-[var(--color-text-secondary)] list-none p-0 mt-[.9rem]"
+        >
           @for (permission of detail.permissions; track $index) {
-            <li>{{ permission }}</li>
+            <li class="min-w-0 [overflow-wrap:anywhere] text-xs leading-normal">
+              {{ permission }}
+            </li>
           } @empty {
-            <li class="empty">Sin permisos asignados</li>
+            <li
+              class="!bg-transparent !py-1 !px-0 !text-[var(--color-text-secondary)] !font-normal !tracking-normal min-w-0 [overflow-wrap:anywhere] text-xs leading-normal"
+            >
+              Sin permisos asignados
+            </li>
           }
         </ul>
       </section>
